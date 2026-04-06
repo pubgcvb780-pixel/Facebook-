@@ -418,10 +418,10 @@ class __PS__:
                 try:
                     po = requests.post(url, data=data, headers=headers, timeout=10).json()
                 except requests.exceptions.Timeout:
-                    print(f"\n{R}[-] Timeout error for {ids} / {pas}")
+                    
                     continue
                 except Exception as e:
-                    print(f"\n{R}[-] Exception: {str(e)}")
+                    
                     continue
 
                 if 'session_key' in po:
